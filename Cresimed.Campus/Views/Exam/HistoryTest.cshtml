@@ -1,0 +1,209 @@
+﻿@using System.Security.Claims;
+@using Cresimed.Core.Entities.Enums
+@using Cresimed.Core.Entities.Database
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model Exam
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../assets/vendor/fonts/fontawesome.css" />
+
+<div class="container" style="min-height:720px;">
+    <div class="card">
+        <div class="container mt-3">
+            @for (int i = 0; i < Model.ExamDetails.Count; i++)
+            {
+                var hayFotoPreg = (@Model.ExamDetails.ToArray()[i].Question.QuestionImage != "no-photo.png") && (@Model.ExamDetails.ToArray()[i].Question.QuestionImage.Trim() != "");
+                var hayFotoRta = (@Model.ExamDetails.ToArray()[i].Question.ExplanationImage != "no-photo.png") && (@Model.ExamDetails.ToArray()[i].Question.ExplanationImage.Trim() != ""); ;
+                <!-- Horizontal -->
+                <div class="row mb-3 QuestionRevisions" id="QuestionRevision_@i">
+                    <div class="col-md">
+                        <div class="card mb-3">
+                            <div class="row g-0">
+                                @if (hayFotoPreg)
+                                {
+                                    @Html.Raw("<div class='col-md-7'>")
+                                }
+                                else
+                                {
+                                    @Html.Raw("<div class='col-md-12'>")
+                                }
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <div class="d-flex justify-content-between bd-highlight mb-3">
+                                            <div class="p-2 bd-highlight">
+                                                <i class="fa-regular fa-circle-question"></i>
+                                                <span class="">
+                                                    @(i + 1) /@Model.ExamDetails.Count
+                                                </span>
+                                            </div>
+
+
+                                            <div class="p-2 bd-highlight">
+                                                <i class='bx bx-time-five'></i>
+                                                <span class="">
+                                                    @Model.ExamDetails.ToArray()[i].Time seg
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    </h5>
+                                    <p class="card-text">
+                                        @Html.Raw(Model.ExamDetails.ToArray()[i].Question.QuestionText)
+                                    </p>
+                                    @foreach (var a in Model.ExamDetails.ToArray()[i].Question.Answers)
+                                    {
+                                        <div class="row form-check" style="margin-top:20px">
+
+                                            <label class="form-check-label" for="radio_@a.AnswerID.ToString()">
+
+                                                @if (Model.ExamDetails.Where(x => x.QuestionID == a.QuestionID).FirstOrDefault().AnswerID == a.AnswerID ? true : false)
+                                                {
+                                                    <i class="fa-solid fa-circle-dot"></i>
+                                                }
+                                                else
+                                                {
+
+                                                    <i class="fa-regular fa-circle"></i>
+                                                }
+
+
+
+                                                @a.Text
+
+                                                @if (a.IsCorrect)
+                                                {
+
+                                                    <i class="fa fa-check-circle-o" style="color:green;"></i>
+                                                }
+                                                @if (!a.IsCorrect)
+                                                {
+
+                                                    <i class="fa fa-times-circle-o" style="color:red;"></i>
+                                                }
+
+
+                                                <span class="ExplanationSection">
+                                                    (%@a.Ratio)
+                                                </span>
+
+                                            </label>
+
+                                        </div>
+
+                                    }
+                                </div>
+                            </div>
+                            @if (hayFotoPreg)
+                            {
+                                <div class="col-md-5">
+                                    <img class="card-img card-img-right" src="https://admin.cresimed.com/images/questions/@Model.ExamDetails.ToArray()[i].Question.QuestionImage" alt="ques" />
+                                </div>
+                            }
+                        </div>
+                        <div class="w-100" style="border:solid 20px rgb(0,0,0,0)">
+                        </div>
+                        <div class="card-footer border" style="">
+
+                            <p class="h3">Explicacion:</p>
+                            <div class="row g-0">
+
+                                <div class="col-md-7">
+                                    <p class="card-text">
+                                        @Html.Raw(Model.ExamDetails.ToArray()[i].Question.Explanation)
+                                    </p>
+                                </div>
+                                @if (hayFotoRta)
+                                {
+                                    <div class="col-md-5">
+                                        <img class="card-img card-img-right" src="https://admin.cresimed.com/images/questions/@Model.ExamDetails.ToArray()[i].Question.ExplanationImage" alt="Card image" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    @Html.Raw("</div>");
+            }
+            <!--/ Horizontal -->
+    </div>
+    <div class="mx-0 mt-0  btn-info">
+        <div class="mx-3 row text-center">
+
+            <div class="col-md-3">
+                    @Model.ExamDetails.Where(x=>x.IsCorrect==true).Count()/@Model.ExamDetails.Count()
+                <br />
+                Nota De Examen
+            </div>
+            <div class="col-md-3">
+                    @{
+                        double ee = Math.Round(((float)Model.ExamDetails.Where(x => x.IsCorrect == true).Count() / (float)Model.ExamDetails.Count()) * 100);
+
+                        @Html.Raw( ee + "%" )
+
+                    }
+                <br />
+                Correctas
+            </div>
+            <div class="col-md-3">
+                    @{
+                        var ensd = Model.DateEnd.HasValue ? Model.DateEnd.Value : Model.DateStarted;
+                        TimeSpan tt = TimeSpan.FromSeconds((ensd - Model.DateStarted).TotalSeconds / @Model.ExamDetails.Count());
+
+                        string answerr = string.Format("{0:D2}h {1:D2}m {2:D2}s",
+                        tt.Hours,
+                        tt.Minutes,
+                        tt.Seconds,
+                        tt.Milliseconds);
+                        @Html.Raw(answerr)
+                        ;
+                    }
+                <br />
+                Tiempo Por Pregunta
+            </div>
+            <div class="col-md-3">
+                    @{
+                        var end = Model.DateEnd.HasValue ? Model.DateEnd.Value : Model.DateStarted;
+                        TimeSpan t = TimeSpan.FromSeconds((end - Model.DateStarted).TotalSeconds);
+
+                        string answer = string.Format("{0:D2}h {1:D2}m {2:D2}s",
+                        t.Hours,
+                        t.Minutes,
+                        t.Seconds,
+                        t.Milliseconds);
+                        @Html.Raw(answer)
+                        ;
+                    }
+
+                <br />
+                Tiempo De Examen
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="container">
+
+                @for (var i = 1; i <= Model.ExamDetails.Count; i++)
+                {
+                    var current = Model.ExamDetails.ToArray()[(i - 1)];
+                    if ((current.IsCorrect.HasValue) ? current.IsCorrect.Value : false)
+                        @Html.Raw("<div class='btn btn-success ' onclick='showQuestion("+i+")' style='width:88px;margin:8px;' >" + i + "</div>")
+                    else
+                        @Html.Raw("<div class='btn btn-danger ' onclick='showQuestion("+i+")' style='width:88px;margin:8px;' '>" + i + "</div>")
+
+                }
+
+
+        </div>
+    </div>
+</div>
+
+
+    @section Scripts {
+    <script src="~/js/revisionExam.js"></script>
+}
+
+

@@ -1,0 +1,234 @@
+﻿
+@using System.Security.Claims;
+@using System.Data
+@using Cresimed.Core.Entities.ViewModel.Admin.Grid
+@model CareerGridViewModel
+    
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+    var prevDisabled = !Model.Careers.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Careers.HasNextPage ? "disabled" : "";
+}
+
+<!-- partial -->
+
+        <div class="main-panel">
+            <div class="content-wrapper">
+                
+            <h1 class="h1">Careers</h1>
+            <br />
+               <form asp-action="Careers" method="get">
+                    <div class="row">
+                        <div class="col-12">
+                        <div class="form-actions no-color">
+                            <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group row">
+                            <label class="col-sm-1 col-form-label">Search: </label>
+                            <div class="col-sm-3">
+                                <input type="text" name="SearchString"  class="form-control" value="@ViewData["CurrentFilter"]" />
+                                
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="submit" class="btn btn-secondary" >
+                                    <i class="mdi mdi-magnify"> </i>
+                                </button>
+                                
+                                    <a asp-action="Careers" class="btn btn-primary"> <i class="mdi mdi-refresh"> </i> </a>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <i class="mdi mdi-plus"> </i>
+                                </button>
+                            </div>
+                          </div>
+                        </div>
+                       
+                      </div>
+                           
+                        </div>
+                           
+                        </div>
+                    </div>
+                </form>
+        <h6>
+            Total: @ViewData["TotalCareers"] &nbsp;&nbsp
+            Filtered: @ViewData["FilteredCareers"] &nbsp;&nbsp
+            Showing: @ViewData["ShowingCareers"] &nbsp;&nbsp
+
+        </h6>
+                <div class="row">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>
+                                <a asp-action="Careers" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    ID
+                                </a>
+                            </th>
+                            <th>
+                                 <a asp-action="Careers" asp-route-sortOrder="@ViewData["CareerSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Career
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Careers" asp-route-sortOrder="@ViewData["SpecialtiesSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Specialties
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Careers" asp-route-sortOrder="@ViewData["CountriesSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Country
+                                </a>
+                            </th>
+                            <th>
+                                <a asp-action="Careers" asp-route-sortOrder="@ViewData["QuestionsSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                    Questions
+                                </a>
+                            </th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.Careers.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.Raw(Model.Careers[i].CareerID)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(Model.Careers[i].Name)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(Model.Careers[i].Specialties.Count)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(Model.Careers[i].Country.Name)
+                                    </td>
+                                    <td class="text">
+                                        @Html.Raw(Model.Careers[i].Questions.Count)
+                                    </td>
+                                    <td>
+                                             
+                                        <a href="@Url.Action("ViewCareer", "Views",new { id = @Model.Careers[i].CareerID })">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a href="@Url.Action("DeleteCareer", "Edition",new { id = @Model.Careers[i].CareerID })">
+                                            <i class='mdi mdi-delete'></i>
+                                        </a>
+                                    
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-4">
+                        </div>
+                        <div class="col-4">
+
+                            <a asp-action="Careers"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-pageNumber="@(Model.Careers.PageIndex - 1)"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               class="btn btn-default @prevDisabled">
+                                Previous
+                            </a>
+                            <a asp-action="Careers"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-pageNumber="@(Model.Careers.PageIndex + 1)"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                               class="btn btn-default @nextDisabled">
+                                Next
+                            </a>
+                        </div>
+                        <div class="col-4">
+                        </div>
+                    </div>
+     
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New Career</h5>
+                <button type="button" class="btn-secondary" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            @using (Html.BeginForm("NewCareer", "Edition", FormMethod.Post, new { @id = "newCareer" }))
+                {
+                  <div class="modal-body">
+                      <ul id="ErrorMessage"></ul>
+                        <div class="form-group">
+                            <label >Name</label>
+                        @Html.TextBoxFor(m => m.NewCareer.Name, new {@id="newCareerName", @maxlength = "128", @class="form-control", @placeholder="Name" })
+                    
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect3">Country</label>
+                            @Html.DropDownListFor(m=>m.NewCareer.CountryID, new SelectList(Model.Countries, "CountryID", "Name"),"Select Country",new {@id="newCareerCountry",@class="form-control form-control-sm"})
+                        </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-primary" value="Save"/>
+                  </div>
+                }
+            </div>
+          </div>
+        </div>  
+          
+    @section Scripts {
+
+    <!-- plugins:js -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.cookie.js" type="text/javascript"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/misc.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="~/js/dashboard.js"></script>
+    <!-- End custom js for this page -->
+    <script>
+        $(document).ready(function () {
+            $('#newCareer').on('submit', function (e) {
+
+                e.preventDefault();
+                var validForm = true;
+
+                $("#ErrorMessage").empty();
+                if ($("#newCareerName").val() === "") {
+                    $("#ErrorMessage").append('<li class="text-danger">Completar nombre por favor!</li>');
+                    validForm = false;
+                }
+                
+                if ($("#newCareerCountry").val() === "") {
+                    $("#ErrorMessage").append('<li class="text-danger">Completar Country por favor!</li>');
+                    validForm = false;
+                }
+
+                if (validForm) {
+                    $("#ErrorMessage").empty();
+                    this.submit();
+                }
+
+
+            });
+        });
+    </script>
+    }

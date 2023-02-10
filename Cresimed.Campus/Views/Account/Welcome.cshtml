@@ -1,0 +1,643 @@
+﻿@using System.Security.Claims;
+@using Cresimed.Core.Entities.ViewModel.Campus
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+    var porcCorr = Model.PieChart.TotalCorrect * 100 / (Model.PieChart.TotalCount != 0 ? Model.PieChart.TotalCount : 1);
+    var porcIncorr = Model.PieChart.TotalIncorrect * 100 / (Model.PieChart.TotalCount != 0 ? Model.PieChart.TotalCount : 1);
+    var listaSpecialties = Model.PercentilChart.Percentils.Select(x => x.Specialty.Name).ToList();
+    var listaPercentilsValue = Model.PercentilChart.Percentils.Select(x => x.Value).ToList();
+
+
+}
+@model DashboardViewModel
+
+<div class="container ">
+    <div class="container ">
+        <div class="row ">
+            <div class="col-md">
+                <div class="card mb-4 bg-secondary  ">
+                    <div class="card-header header-elements">
+                        <span class="h3" style="color:white;margin-bottom:0!important">¿Qué te gustaría estudiar hoy?</span>
+
+                        <div class="card-header-elements ms-auto">
+                            <div class="btn-group">
+                                <a href="@Url.Action("CreateTest","Exam")" class="btn" style="background-color:#00cfdd;color:white;">Comenzar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-6 col-12">
+                <div class="card">
+                    <h5 class="card-header">Rendimiento</h5>
+                    <div class="card-body">
+                        @if (Model.PieChart.TotalCorrect > 0 || Model.PieChart.TotalIncorrect > 0)
+                        {
+                            <canvas id="doughnutChart" class="chartjs mx-5 " data-height="1"></canvas>
+                            <ul class="doughnut-legend d-flex justify-content-around ps-0 mb-3 pt-1">
+                                <li class="ct-series-2 d-flex flex-column">
+                                    <h5 class="mb-0 fw-bold">Incorrectas</h5>
+                                    <span class="badge badge-dot my-2 cursor-pointer rounded-pill"
+                                      style="background-color:#FF0000; width: 35px; height: 6px"></span>
+                                    <div class="text-muted">
+                                        @Html.Raw(porcIncorr)%
+                                    </div>
+                                </li>
+                                <li class="ct-series-1 d-flex flex-column">
+                                    <h5 class="mb-0 fw-bold">Correctas</h5>
+                                    <span class="badge badge-dot my-2 cursor-pointer rounded-pill"
+                                      style="background-color: #00FF00; width: 35px; height: 6px"></span>
+                                    <div class="text-muted">
+                                        @Html.Raw(porcCorr)%
+
+                                    </div>
+                                </li>
+                            </ul>
+
+                            <div class="row">
+                                <div class="col-md-7">
+                                </div>
+                                <div class="col-md-5">
+                                    <a class="btn btn-info" href="@Url.Action("TestStats","Exam")">
+                                        Análisis completo
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <strong>
+
+                                        @Html.Raw("Aún no hay datos para mostrar")
+                                    </strong>
+                                </td>
+
+
+                            </tr>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Mejores Especialidades</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.PercentilChart.Percentils.Count() > 0)
+                        {
+                            <div id="radarChart"></div>
+                            <table class="table ">
+
+                                <tbody class="table-border-bottom-0">
+                                    @for (var i = 0; i < Model.PercentilChart.Percentils.Count(); i++)
+                                    {
+                                        <tr>
+                                            <td> <strong> @Model.PercentilChart.Percentils[i].Specialty.Name </strong></td>
+
+                                            <td class="text-end">
+                                                @Model.PercentilChart.Percentils[i].Value
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <strong>
+
+                                        @Html.Raw("Aún no hay datos para mostrar")
+                                    </strong>
+                                </td>
+
+
+                            </tr>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Mejores Especialidades</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body">
+                          <canvas id="barChart" class="chartjs" data-height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Radar Chart -->
+        </div>
+        <br />
+        <div class="row ">
+            <div class="col-md">
+                <div class="card mb-4">
+                    <h5 class="card-header">Últimos 5 exámenes</h5>
+                    <div class="table-responsive text-nowrap">
+                        <table class="table datatables-ajax table table-bordered text-center">
+                        @if (Model.Last5Exams.Count()>0)
+                        { 
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <a asp-action="HistoryTests" asp-route-sortOrder="@ViewData["ExamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                                Fecha
+                                            </a>
+                                        </th>
+                                        <th>
+                                            Puntaje
+                                        </th>
+                                        <th>
+                                            Correctas
+                                        </th>
+                                        <th>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0">
+                                    @for (var i = 0; i < Model.Last5Exams.Count(); i++)
+                                    {
+                                        decimal corr = Model.Last5Exams[i].ExamDetails.Where(x => x.IsCorrect == true).Count();
+                                        decimal tot = Model.Last5Exams[i].QuestionsAmount;
+                                        double div = Math.Round(((float)corr / (float)tot) * 100);
+
+                                        <tr>
+
+                                            <td>
+                                                @Html.Raw(Model.Last5Exams[i].DateStarted.ToString("dd/MM/yyyy HH:mm"))
+                                            </td>
+                                            <td class="text-center">
+                                                <span>
+                                                    @Html.Raw(div + "%")
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-between">
+
+                                                    @Html.Raw("<span>"+Model.Last5Exams[i].ExamDetails.Where(x=>x.IsCorrect==true).Count()+"</span>")
+                                                    <span>
+                                                        /
+                                                    </span>
+
+                                                    @Html.Raw("<span>" + Model.Last5Exams[i].QuestionsAmount + "</span>")
+                                                </div>
+                                                <br>
+                                                <div class="progress mb-3">
+                                                    <div class="progress-bar bg-success"
+                                                 role="progressbar"
+                                                 style="width: @(div)%"
+                                                 aria-valuenow="@(div)"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-danger"
+                                                 role="progressbar"
+                                                 style="width: @(100 - div)%"
+                                                 aria-valuenow="@(100 - div)"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100"></div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-outline-light" style="color:black" href="/Exam/HistoryTest?examid=@Model.Last5Exams[i].ExamID">
+                                                    <i class="fa fa-eye"></i>
+                                                    Ver
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                        }else{
+                                <tbody class="table-border-bottom-0">
+                                        <tr>
+                                            <td colspan="4">
+                                                @Html.Raw("Aún no hay datos para mostrar")
+                                            </td>
+                                        </tr>
+                                </tbody>
+                                    }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+@section Scripts {
+
+    <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/chartjs/chartjs.js"></script>
+
+
+
+    <script>
+        'use strict';
+
+        (function () {
+            // Color Variables
+            const purpleColor = '#836AF9',
+                yellowColor = '#ffe800',
+                redColor = '#ff0000',
+                greenColor = '#00FF00',
+                cyanColor = '#28dac6',
+                orangeColor = '#FF8132',
+                orangeLightColor = '#FDAC34',
+                oceanBlueColor = '#299AFF',
+                greyColor = '#4F5D70',
+                greyLightColor = '#EDF1F4',
+                blueColor = '#2B9AFF',
+                blueLightColor = '#84D0FF';
+
+            let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+            if (isDarkStyle) {
+                cardColor = config.colors_dark.cardColor;
+                headingColor = config.colors_dark.headingColor;
+                labelColor = config.colors_dark.textMuted;
+                legendColor = config.colors_dark.bodyColor;
+                borderColor = config.colors_dark.borderColor;
+            } else {
+                cardColor = config.colors.cardColor;
+                headingColor = config.colors.headingColor;
+                labelColor = config.colors.textMuted;
+                legendColor = config.colors.bodyColor;
+                borderColor = config.colors.borderColor;
+            }
+
+            // Set height according to their data-height
+            // --------------------------------------------------------------------
+            const chartList = document.querySelectorAll('.chartjs');
+            chartList.forEach(function (chartListItem) {
+                chartListItem.height = chartListItem.dataset.height;
+            });
+            // Doughnut Chart
+            // --------------------------------------------------------------------
+
+            const doughnutChart = document.getElementById('doughnutChart');
+            if (doughnutChart) {
+                const doughnutChartVar = new Chart(doughnutChart, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Correctas", "Incorrectas"],// JSON.parse(nombresEspecialidades),
+                        datasets: [
+                            {
+                                data: [@Model.PieChart.TotalCorrect, @Model.PieChart.TotalIncorrect],//JSON.parse(correctas),
+                                backgroundColor: [greenColor, redColor],
+                                borderWidth: 0,
+                                pointStyle: 'rectRounded'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        animation: {
+                            duration: 500
+                        },
+                        cutout: '0%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const label = context.label || '',
+                                            value = context.parsed;
+                                        const output = ' ' + label + ' : ' + value + ' ';
+                                        return output;
+                                    }
+                                },
+                                // Updated default tooltip UI
+                                rtl: isRtl,
+                                backgroundColor: cardColor,
+                                titleColor: headingColor,
+                                bodyColor: legendColor,
+                                borderWidth: 1,
+                                borderColor: borderColor
+                            }
+                        }
+                    }
+                });
+            }
+            var nombresEspecialidades = '[@foreach (var e in Model.PieChart.CountBySpecialties)
+                                        {
+                                            var last = Model.PieChart.CountBySpecialties.Last();
+                                            if (last.Name == e.Name)
+                                                @Html.Raw('"'+e.Name+'"')
+                                            else
+                                                @Html.Raw('"'+e.Name+'"' + ",")
+                                            ;
+                                        }]';
+                var correctas = '[@foreach (var e in Model.PieChart.CountBySpecialties)
+                                        {
+                                            var last = Model.PieChart.CountBySpecialties.Last();
+                                            if (last.Name == e.Name)
+                                                @Html.Raw(e.Corrects)
+                                            else
+                                                @Html.Raw(e.Corrects + ",")
+                                            ;
+                                        }]';
+
+
+
+
+            })();
+        </script>
+    <script>
+
+            'use strict';
+
+            (function () {
+                let cardColor, headingColor, labelColor, borderColor, legendColor, radialTrackColor;
+
+                if (isDarkStyle) {
+                    cardColor = config.colors_dark.cardColor;
+                    headingColor = config.colors_dark.headingColor;
+                    labelColor = config.colors_dark.textMuted;
+                    legendColor = config.colors_dark.bodyColor;
+                    borderColor = config.colors_dark.borderColor;
+                    radialTrackColor = '#36435C';
+                } else {
+                    cardColor = config.colors.cardColor;
+                    headingColor = config.colors.headingColor;
+                    labelColor = config.colors.textMuted;
+                    legendColor = config.colors.bodyColor;
+                    borderColor = config.colors.borderColor;
+                    radialTrackColor = config.colors_label.secondary;
+                }
+
+                // Color constant
+                const chartColors = {
+                    column: {
+                        series1: '#826af9',
+                        series2: '#d2b0ff',
+                        bg: '#f8d3ff'
+                    },
+                    donut: {
+                        series1: '#fee802',
+                        series2: '#3fd0bd',
+                        series3: '#826bf8',
+                        series4: '#2b9bf4'
+                    },
+                    area: {
+                        series1: '#29dac7',
+                        series2: '#60f2ca',
+                        series3: '#a5f8cd'
+                    }
+                };
+
+
+                // Radar Chart
+                // --------------------------------------------------------------------
+                const radarChartEl = document.querySelector('#radarChart'),
+                    radarChartConfig = {
+                        chart: {
+                            height: 350,
+                            fontFamily: 'IBM Plex Sans',
+                            type: 'radar',
+                            toolbar: {
+                                show: false
+                            },
+                            dropShadow: {
+                                enabled: false,
+                                blur: 8,
+                                left: 1,
+                                top: 1,
+                                opacity: 0.2
+                            }
+                        },
+                        legend: {
+                            show: true,
+                            position: 'bottom',
+                            labels: {
+                                colors: legendColor,
+                                useSeriesColors: false
+                            }
+                        },
+                        plotOptions: {
+                            radar: {
+                                polygons: {
+                                    strokeColors: borderColor,
+                                    connectorColors: borderColor
+                                }
+                            }
+                        },
+                        yaxis: {
+                            show: false
+                        },
+                        series: [
+                            {
+                                name: 'Yo',
+                                data: @Html.Raw("[")
+                                        @for (var i = 0; i < listaPercentilsValue.Count(); i++)
+                                        {
+                                            @Html.Raw(" '")
+                                            ;
+                                            @Html.Raw(listaPercentilsValue[i])
+                                            ;
+                                            @Html.Raw("'")
+                                            ;
+                                            if (i != listaPercentilsValue.Count() - 1)
+                                                @Html.Raw(",")
+                                            ;
+                                        }
+                                        @Html.Raw("]"),
+                            }
+                        ],
+                        colors: [chartColors.donut.series1, chartColors.donut.series3],
+                        xaxis: {
+                            categories:
+                                        @Html.Raw("[")
+                                        @for (var i = 0; i < listaSpecialties.Count(); i++)
+                                        {
+                                            @Html.Raw(" '")
+                                            ;
+                                            @Html.Raw(listaSpecialties[i])
+                                            ;
+                                            @Html.Raw("'")
+                                            ;
+                                            if (i != listaSpecialties.Count() - 1)
+                                                @Html.Raw(",")
+                                            ;
+
+                                        }
+                                        @Html.Raw("]"),
+                            labels: {
+                                show: true,
+                                style: {
+                                    colors: [labelColor, labelColor, labelColor, labelColor, labelColor, labelColor, labelColor, labelColor],
+                                    fontSize: '13px',
+                                    fontFamily: 'IBM Plex Sans'
+                                }
+                            }
+                        },
+                        fill: {
+                            opacity: [1, 0.8]
+                        },
+                        stroke: {
+                            show: false,
+                            width: 0
+                        },
+                        markers: {
+                            size: 0
+                        },
+                        grid: {
+                            show: false,
+                            padding: {
+                                top: -20,
+                                bottom: -20
+                            }
+                        }
+                    };
+                if (typeof radarChartEl !== undefined && radarChartEl !== null) {
+                    const radarChart = new ApexCharts(radarChartEl, radarChartConfig);
+                    radarChart.render();
+                }
+
+            })();
+        </script>
+    <script>
+        /**
+        * Charts ChartsJS
+        */
+        'use strict';
+
+        (function () {
+            // Color Variables
+            const purpleColor = '#836AF9',
+                yellowColor = '#ffe800',
+                cyanColor = '#28dac6',
+                orangeColor = '#FF8132',
+                orangeLightColor = '#FDAC34',
+                oceanBlueColor = '#299AFF',
+                greyColor = '#4F5D70',
+                greyLightColor = '#EDF1F4',
+                blueColor = '#2B9AFF',
+                blueLightColor = '#84D0FF';
+
+            let cardColor, headingColor, labelColor, borderColor, legendColor;
+
+            if (isDarkStyle) {
+                cardColor = config.colors_dark.cardColor;
+                headingColor = config.colors_dark.headingColor;
+                labelColor = config.colors_dark.textMuted;
+                legendColor = config.colors_dark.bodyColor;
+                borderColor = config.colors_dark.borderColor;
+            } else {
+                cardColor = config.colors.cardColor;
+                headingColor = config.colors.headingColor;
+                labelColor = config.colors.textMuted;
+                legendColor = config.colors.bodyColor;
+                borderColor = config.colors.borderColor;
+            }
+
+            // Set height according to their data-height
+            // --------------------------------------------------------------------
+            const chartList = document.querySelectorAll('.chartjs');
+            chartList.forEach(function (chartListItem) {
+                chartListItem.height = chartListItem.dataset.height;
+            });
+
+            // Bar Chart
+            // --------------------------------------------------------------------
+            const barChart = document.getElementById('barChart');
+            if (barChart) {
+                const barChartVar = new Chart(barChart, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            '7/12',
+                            '8/12',
+                            '9/12',
+                            '10/12',
+                            '11/12',
+                            '12/12',
+                            '13/12',
+                            '14/12',
+                            '15/12',
+                            '16/12',
+                            '17/12',
+                            '18/12',
+                            '19/12'
+                        ],
+                        datasets: [
+                            {
+                                data: [275, 90, 190, 205, 125, 85, 55, 87, 127, 150, 230, 280, 190],
+                                backgroundColor: cyanColor,
+                                borderColor: 'transparent',
+                                maxBarThickness: 15,
+                                borderRadius: {
+                                    topRight: 15,
+                                    topLeft: 15
+                                }
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 500
+                        },
+                        plugins: {
+                            tooltip: {
+                                rtl: isRtl,
+                                backgroundColor: cardColor,
+                                titleColor: headingColor,
+                                bodyColor: legendColor,
+                                borderWidth: 1,
+                                borderColor: borderColor
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    color: labelColor
+                                }
+                            },
+                            y: {
+                                min: 0,
+                                max: 400,
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    stepSize: 100,
+                                    color: labelColor
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+        })();</script>
+}

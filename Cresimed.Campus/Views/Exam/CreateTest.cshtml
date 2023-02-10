@@ -1,0 +1,215 @@
+﻿@using Cresimed.Core.Entities.Enums
+@using Cresimed.Core.Entities.ViewModel.Campus
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model CreateExamIndexViewModel
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<div class="col-12">
+    <div class="container">
+        <div class="card">
+            <h1 class="card-header">Crear Examen</h1>
+            <div class="card-body">
+                @using (Html.BeginForm("CreateTest", "Exam", FormMethod.Post, new { @class = "forms-sample", @id = "FormCreateExam" }))
+                {
+                    @Html.HiddenFor(m=>m.Specialties,Model.Specialties)
+                    <p class="card-description " style="color:red;" id="ErrorMsg">  </p>
+                    <div class="container">
+                        <!--cant preguntas && tipo de Preguntas -->
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <h4>
+                                        # Preguntas <small class="text-muted"> Cantidad de Preguntas</small>
+                                    </h4>
+                                    <br>
+                                    @Html.TextBoxFor(m => m.QuestionsAmount, new {@type= "number", @maxlength = "4",@max = "200" , @class="form-control ",@id="QuestionAmount", @placeholder="" })
+
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="">
+                                    <h4>
+                                        Tipo de Preguntas <small class="text-muted"> </small>
+                                    </h4>
+                                    <br>
+                                    <div class="col-4">
+                                        <div class="container">
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                <label class="form-check-label">
+                                                    @Html.RadioButtonFor(m => m.QuestionsType,(int)QuestionsTypeEnum.NEW, new { @class = "form-check-input",@id="radioButtonNEW"})
+                                                    Nuevas
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="container">
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                <label class="form-check-label">
+                                                    @Html.RadioButtonFor(m => m.QuestionsType,(int)QuestionsTypeEnum.INCORRECT, new { @class = "form-check-input",@id="radioButtonINCORRECT"})
+                                                    Incorrectas
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="container">
+
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                <label class="form-check-label">
+                                                    @Html.RadioButtonFor(m => m.QuestionsType,(int)QuestionsTypeEnum.ALL, new { @class = "form-check-input",@id="radioButtonALL"})
+                                                    Todas
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <br>
+
+                        <!--tipo de examen && Category-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>
+                                    Tipo de examen <small class="text-muted"> </small>
+                                </h4>
+                                <div class="row">
+                                    <br>
+                                    <div class="col-12">
+                                        <div class="form-group row">
+                                            <div class="col-sm-12 col-form-label form-check form-switch">
+                                                <label class="switch switch-primary">
+                                                    @Html.CheckBoxFor(m => m.Tutor, new { @class = "switch-input ", @id="switchTutor" })
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Tutor</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="col-sm-4 col-form-label form-check form-switch">
+                                                <label class="switch switch-primary">
+                                                    @Html.CheckBoxFor(m => m.Timer, new { @class = "switch-input ", @id="switchTimer" })
+                                                    <span class="switch-toggle-slider">
+                                                        <span class="switch-on"></span>
+                                                        <span class="switch-off"></span>
+                                                    </span>
+                                                    <span class="switch-label">Timer</span>
+                                                </label>
+                                            </div>
+                                            <div class="col-sm-4 col-form-label form-check form-switch" id="inputTimer">
+
+                                                <input name="TimeAmount" type="number" maxlength="3" class="form-control btn-dark" id="TimerInput" />
+                                                Minutos
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4>
+                                    Categor&iacute;a <small class="text-muted">  </small>
+                                </h4>
+
+                                <div class="col-12">
+                                            <div class="container">
+                                        <div class="form-check form-check-flat form-check-primary">
+                                            <label class="form-check-label">
+                                                @Html.RadioButtonFor(m => m.QuestionsCategory,(int)QuestionsTypeEnum.ALL, new { @class = "form-check-input"})
+                                                Todas
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @for (int i = 0; i < Model.Categories.Count(); i++)
+                                {
+                                    <div class="col-12">
+                                        <div class="container">
+                                            <div class="form-check form-check-flat form-check-primary">
+                                                <label class="form-check-label">
+                                                    @*
+
+
+                                            @if (Model.QuestionsCategory == (Model.Categories[i].CategoryID))
+                                            {
+                                            <input name="QuestionsCategory" class="form-check-input" type="radio" value="@Model.Categories[i].CategoryID" checked/>
+                                            @Model.Categories[i].Name
+                                            }
+                                            else
+                                            {
+                                            *@
+                                                    <input name="QuestionsCategory" class="form-check-input" type="radio" value="@Model.Categories[i].CategoryID" />
+                                                    @Model.Categories[i].Name
+                                                    @*
+                                            }
+                                            *@
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <br>
+
+                        <!--Especialidades-->
+                        <div class="row">
+                            <h4>
+                                Especialidades <small class="text-muted"> Si no selecciona ninguna ser&aacute; aleatorio </small>
+                            </h4>
+                            <br>
+                            @for (int i = 0; i < Model.Specialties.Count(); i++)
+                            {
+                                <div class="col-4">
+                                    <div class="container">
+                                        <div class="form-check form-check-flat form-check-primary">
+                                            <label class="form-check-label">
+                                                @if (Model.QuestionsSpecialty.Contains(Model.Specialties[i].SpecialtyID))
+                                                {
+                                                    <input name="QuestionsSpecialty" class="form-check-input" id="chkSpecialties_@Model.Specialties[i].SpecialtyID" type="checkbox" value="@Model.Specialties[i].SpecialtyID" checked />
+                                                    @Model.Specialties[i].Name
+                                                }
+                                                else
+                                                {
+                                                    <input name="QuestionsSpecialty" class="form-check-input" id="chkSpecialties_@Model.Specialties[i].SpecialtyID" type="checkbox" value="@Model.Specialties[i].SpecialtyID" />
+                                                    @Model.Specialties[i].Name
+                                                }
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                        <br>
+                    </div>
+
+                }
+
+            </div>
+            <div class="card-footer">
+
+                <button type="button" onclick="validateCreateExamForm()" class="btn btn-primary me-2">Comenzar</button>
+                <a class="btn btn-dark" href="@Url.Action("Welcome","Account")">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/create-exam.js"></script>
+@section Scripts {
+}

@@ -1,0 +1,122 @@
+﻿@using Cresimed.Core.Entities.Enums
+@using Cresimed.Core.Entities.ViewModel.Campus
+@{
+    ViewData["Title"] = "Contacto";
+}
+@model ContactViewModel
+
+<!-- Basic with Icons -->
+<div class="col-xxl">
+    <div class="card mb-4">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">Contacto</h5>
+            
+        </div>
+        <div class=" mb-0 " style="margin-left:2%;font-weight:700">
+            @if(Model.isOk != null)
+            {
+                if (Model.isOk)
+                {
+                    <span style="color:green"> 
+                        @Html.DisplayFor(m=>m.Status)
+                    </span>
+                }
+                else
+                {
+                    <span style="color:red"> 
+                        @Html.DisplayFor(m=>m.Status)
+                    </span>
+                }
+            }
+        </div>
+
+        <div class="card-body">
+            @using (Html.BeginForm("NewContact", "Home", FormMethod.Post, new { @class = "forms-sample", @id = "FormCreateExam" }))
+            {
+
+                <!-- Name -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-fullname">Nombre</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-fullname2" class="input-group-text">
+                                <i class="bx bx-user"></i>
+                            </span>
+                            @Html.TextBoxFor(m=>m.Contact.Name, new {@type= "text", @class="form-control ", @placeholder="Nombre" })
+                        </div>
+                    </div>
+                </div>
+                <!-- LastName -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-company">Apellido</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-company2" class="input-group-text">
+                                <i class="bx bx-user"></i>
+                            </span>
+                            @Html.TextBoxFor(m=>m.Contact.Lastname, new {@type= "text", @class="form-control ", @placeholder="Apellido" })
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Email -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Email</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+                            @Html.TextBoxFor(m=>m.Contact.Email, new {@type= "text", @class="form-control ", @placeholder="Email" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Pais -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Pais</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class='bx bx-current-location'></i></span>
+                            @Html.TextBoxFor(m=>m.Contact.Country, new {@type= "text", @class="form-control ", @placeholder="Pais" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Subject -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label" for="basic-icon-default-email">Asunto</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span class="input-group-text"><i class='bx bxs-quote-alt-right'></i></span>
+                            @Html.TextBoxFor(m=>m.Contact.Subject, new {@type= "text", @class="form-control ", @placeholder="Asunto" })
+                        </div>
+                    </div>
+                </div>
+                <!-- Mensaje -->
+                <div class="row mb-3">
+                    <label class="col-sm-2 form-label" for="basic-icon-default-message">Mensaje</label>
+                    <div class="col-sm-10">
+                        <div class="input-group input-group-merge">
+                            <span id="basic-icon-default-message2" class="input-group-text">
+                                <i class="bx bx-comment"></i>
+                            </span>
+                            @Html.TextAreaFor(m=>m.Contact.Message, new {@type= "text", @class="form-control ", @placeholder="Mensaje..." })
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Button -->
+                <div class="row justify-content-end">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+
+
+
+</script>
+
+@section Scripts {
+}

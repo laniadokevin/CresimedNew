@@ -1,0 +1,82 @@
+﻿@page
+@model string 
+@{
+}
+    <head>
+    <title> Cambiar Password | Cresimed</title>
+
+    </head>
+<div class="container">
+    <!-- Content -->
+
+    <div class="container-xxl">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="authentication-inner py-4">
+                <!-- Reset Password -->
+                <div class="card">
+                    <div class="card-body">
+                         <h4 class="mb-2">Cambiar Contraseña 🔒</h4>
+                        <form id="formAuthentication" class="mb-3" action="@Url.Action("ResetPwd", "Account")" method="POST">
+
+                            <div class="mb-3 form-password-toggle">
+                                <label class="form-label" for="password">Nueva Contraseña</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password"
+                                           id="password"
+                                           class="form-control"
+                                           name="password"
+                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                           aria-describedby="password" />
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                </div>
+                            </div>
+                            <div class="mb-3 form-password-toggle">
+                                <label class="form-label" for="confirm-password">Confirmar Contraseña</label>
+                                <div class="input-group input-group-merge">
+                                    <input type="password"
+                                           id="confirm-password"
+                                           class="form-control"
+                                           name="confirm-password"
+                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                           aria-describedby="password" />
+                                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary d-grid w-100 mb-3">Guardar Contraseña</button>
+                           
+                        </form>
+                    </div>
+                </div>
+                <!-- /Reset Password -->
+            </div>
+        </div>
+    </div>
+
+    <!-- / Content -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../../assets/vendor/js/bootstrap.js"></script>
+    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
+
+    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="../../assets/vendor/libs/typeahead-js/typeahead.js"></script>
+
+    <script src="../../assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="../../assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="../../assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="../../assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="../../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="../../assets/js/pages-auth.js"></script>
+</div>
+@section Scripts {
+}

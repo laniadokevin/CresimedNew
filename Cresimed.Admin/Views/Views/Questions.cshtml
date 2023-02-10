@@ -1,0 +1,559 @@
+﻿    
+@using System.Security.Claims;
+@using Cresimed.Core.Entities.Database
+@using Cresimed.Core.Entities.ViewModel.Admin.Edition
+@model QuestionViewViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+}
+<style>
+   @@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+    @@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+    // variables
+    $base-color: cadetblue;
+    $base-font: 'Raleway', sans-serif;
+
+    body {
+      font-family: $base-font;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: lighten($base-color, 45%);
+    }
+
+    .wrapper{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      font-family: inherit;
+      margin: 0 0 .75em 0;
+      color: desaturate($base-color, 15%);
+      text-align: center;
+    }
+
+    .box {
+      display: block;
+      min-width: 300px;
+      height: 300px;
+      margin: 10px;
+      
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+      overflow: hidden;
+    }
+
+    .upload-options {
+      position: relative;
+      height: 75px;
+      background-color: $base-color;
+      cursor: pointer;
+      overflow: hidden;
+      text-align: center;
+      transition: background-color ease-in-out 150ms;
+      &:hover {
+        background-color: lighten($base-color, 10%);
+      }
+      & input {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+      }
+      & label {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        font-weight: 400;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: pointer;
+        overflow: hidden;
+        &::after {
+          content: 'add'; 
+          font-family: 'Material Icons';
+          position: absolute;
+          font-size: 2.5rem;
+          color: rgba(230, 230, 230, 1);
+          top: calc(50% - 2.5rem);
+          left: calc(50% - 1.25rem);
+          z-index: 0;
+        }
+        & span {
+          display: inline-block;
+          width: 50%;
+          height: 100%;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          vertical-align: middle;
+          text-align: center;
+          &:hover i.material-icons {
+            color: lightgray;        
+          }
+        }
+      }
+    }
+
+
+    .js--image-preview {
+      height: 225px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background-image: url('');
+      background-color: white;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      &::after {
+        content: "photo_size_select_actual"; 
+        font-family: 'Material Icons';
+        position: relative;
+        font-size: 4.5em;
+        color: rgba(230, 230, 230, 1);
+        top: calc(50% - 3rem);
+        left: calc(50% - 2.25rem);
+        z-index: 0;
+      }
+      &.js--no-default::after {
+        display: none;
+      }
+      &:nth-child(2) {
+        background-image: url('http://bastianandre.at/giphy.gif');
+      }
+    }
+
+    i.material-icons {
+      transition: color 100ms ease-in-out;
+      font-size: 2.25em;
+      line-height: 55px;
+      color: white;
+      display: block;
+    }
+
+    .drop {
+      display: block;
+      position: absolute;
+      background: transparentize($base-color, .8);
+      border-radius: 100%;
+      transform:scale(0);
+    }
+
+    .animate {
+      animation: ripple 0.4s linear;
+    }
+
+    @@keyframes ripple {
+        100% {opacity: 0; transform: scale(2.5);}
+    }
+    }
+</style>
+        <!-- partial -->
+
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <h1 class="h1">Questions</h1>
+            
+            <div class="row" style="border: 1px solid #2c2e33 ">
+         @using (Html.BeginForm("UpdateQuestion", "Edition", FormMethod.Post,new {@enctype="multipart/form-data",@id="formEditQuestion"}))
+                {
+                    
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <label >Text</label>
+                                @Html.TextAreaFor(m => m.Question.QuestionText, new { @maxlength = "8000", @class="form-control",@id="NewQuestionQuestionText", @style = "resize: vertical;height:20vh", @placeholder="Question Text" })
+                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label>Explanation</label>
+                                @Html.TextAreaFor(m => m.Question.Explanation, new { @maxlength = "8000", @class="form-control",@id="NewQuestionExplanation", @style = "resize: vertical;height:20vh", @placeholder="Explanation" })
+                    
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <div class="form-group">
+                                    Question Image
+                                      <div class="box">
+                                        <div class="js--image-preview"></div>
+                                        <div class="upload-options">
+                                        @if (Model.Question!=null){
+
+                                              <img src= "~/images/questions/@Url.Content(Model.Question.QuestionImage)" width=100 alt="Image" />
+                                        }
+                                            <label>
+                                                <input type="file" asp-for=File  class="image-upload" accept="image/*" id="NewQuestionQuestionImage" class="file" >
+                                            </label>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>    
+                        <div class="col">
+                            <div class="form-group">
+                                Explanation Image
+                                <div class="box">
+                                    <div class="js--image-preview"></div>
+                                    <div class="upload-options">
+                                        @if(Model.Question!=null)
+                                        {
+
+                                            <img src="~/images/questions/@Url.Content(Model.Question.ExplanationImage)" width=100 alt="Image" />
+                                        }
+                                    <label for="NewQuestionExplanationImage">
+                                        <input id="NewQuestionExplanationImage"  asp-for=AnswerFile type="file" class="image-upload" accept="image/*" />
+                                        </label>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+
+                        </div>
+                        <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect3">Specialty</label>
+                                @Html.DropDownListFor(m=>m.Question.SpecialtyID, new SelectList(Model.Specialties , "SpecialtyID", "Name"),"Select Specialty",new {@class="form-control form-control-sm",@id="NewQuestionSpecialtyID"})
+                            </div>
+                            </div>
+                        <div class="col">
+                               <div class="form-group">
+                                <label for="exampleFormControlSelect3">Category</label>
+                                @Html.DropDownListFor(m=>m.Question.CategoryID, new SelectList(Model.Categories , "CategoryID", "Name"),"Select Category ",new {@class="form-control form-control-sm",@id="NewQuestionCategoryID"})
+                            </div>
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                                  <div class="row">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                             <th>
+                                KeyWord
+                            </th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.KeyWords.Count(); i++)
+                            {
+                                <tr>
+
+                                    <td class="text">
+                                        @Html.Raw(Model.KeyWords[i].Text)
+                                    </td>
+                                    <td>
+
+                                                        <a href="@Url.Action("ViewKeyWord", "Views",new { id = @Model.KeyWords[i].KeyWordID })">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                                        <a href="@Url.Action("DeleteKeyWord", "Edition",new { id = @Model.KeyWords[i].KeyWordID })">
+                                            <i class='mdi mdi-delete'></i>
+                                        </a>
+                                    
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                            <div class="form-group">
+                                <button id="addRowKeyWord" type="button" class="btn btn-info">Add</button>
+                                <div id="newRowKeyWord">
+                                    <input type="hidden" id="totalKeyWord" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                          @*
+                       
+                            @Html.DropDownListFor(m=>m.Question.CareerID, new SelectList(Model.Careers , "CareerID", "Name"),"Select Career ",new {@class="form-control form-control-sm",@id="NewQuestionCareerID"})
+                            @Html.DropDownListFor(m=>m.Question.CountryID, new SelectList(Model.Countries , "CountryID", "Name"),"Select Country ",new {@class="form-control form-control-sm",@id="NewQuestionCountryID"})
+
+                          *@
+
+                            @Html.HiddenFor(m=>m.Question.QuestionID)
+                            @Html.HiddenFor(m=>m.Question.CareerID)
+                            @Html.HiddenFor(m=>m.Question.CountryID)
+                            
+               <div class="row">
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>
+                                ID
+                            </th>
+                             <th>
+                                Answer
+                            </th>
+                            <th>
+                                IsCorrect
+                            </th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.Answers.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.Raw(Model.Answers[i].AnswerID)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(Model.Answers[i].Text)
+                                    </td>
+                                    <td class="text">
+                                        @Html.Raw(Model.Answers[i].IsCorrect)
+                                    </td>
+                                    <td>
+                                             
+                                        <a href="@Url.Action("ViewAnswer", "Views",new { id = @Model.Answers[i].AnswerID })">
+                                            <i class="mdi mdi-pencil"></i>
+                                        </a>
+                                        <a href="@Url.Action("DeleteAnswer", "Edition",new { id = @Model.Answers[i].AnswerID })">
+                                            <i class='mdi mdi-delete'></i>
+                                        </a>
+                                    
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+                        <div class="row">
+                        <button id="addRow" type="button" class="btn btn-info">Add</button>
+                             <div id="newRow">
+                                 <input type="hidden" id="total" value="0" />
+
+                             </div>
+                        </div>
+                         
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit"id="bstnSubmitQuestion" class="btn btn-primary" >Save</button>
+                    
+                  </div>
+                }
+            </div>
+          </div>
+          </div>
+          <!-- content-wrapper ends -->
+
+    @section Scripts {
+
+        <!-- plugins:js -->
+        <script src="~/vendors/js/vendor.bundle.base.js"></script>
+        <!-- endinject -->
+        <!-- Plugin js for this page -->
+        <script src="~/vendors/chart.js/Chart.min.js"></script>
+        <script src="~/vendors/progressbar.js/progressbar.min.js"></script>
+        <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+        <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="~/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+        <script src="~/js/jquery.cookie.js" type="text/javascript"></script>
+        <!-- End plugin js for this page -->
+        <!-- inject:js -->
+        <script src="~/js/off-canvas.js"></script>
+        <script src="~/js/hoverable-collapse.js"></script>
+        <script src="~/js/misc.js"></script>
+        <script src="~/js/settings.js"></script>
+        <script src="~/js/todolist.js"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page -->
+        <script src="~/js/dashboard.js"></script>
+        <!-- End custom js for this page -->
+
+         <script>
+        //add rows
+        $("#addRowKeyWord").click(function () {
+            var rowCountKW = parseInt($("#totalKeyWord").val());
+            rowCountKW++;
+            $("#totalKeyWord").val(rowCountKW);
+            var html = '';
+            html += '<div id="inputRowKeyWord" style="margin-top:10px" class="row">';
+            html += '<div class="col-6">';
+            html += '<div class="form-group">';
+            html += '<textarea id="NewKeyWordsText" name="NewKeyWords[' + (rowCountKW - 1) + '].Text"  style="resize: vertical;height:5vh;width:100%"/>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="col-1">';
+            html += '<div class="form-group">';
+            html += '<button id="removeRowKeyWord" type="button" class="btn btn-danger">Remove</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#newRowKeyWord').append(html);
+        });
+
+        $(document).on('click', '#removeRowKeyWord', function () {
+            var rowCountKW = parseInt($("#totalKeyWord").val());
+            rowCountKW--;
+            $("#totalKeyWord").val(rowCountKW);
+            $(this).closest('#inputRowKeyWord').remove();
+        });
+
+        //add rows
+        $("#addRow").click(function ()
+        {
+            var rowCount = parseInt($("#total").val());
+            rowCount++;
+            $("#total").val(rowCount);
+            var html = '';
+            html += '<div id="inputRow" style="margin-top:10px" class="row">';
+            html += '<div class="col-2">';
+            html += '<div class="form-group">';
+            html += '<label for="NewAnswerIsCorrect">';
+            html += '<input id="NewAnswerIsCorrect" type="checkbox" name="NewAnswers[' + (rowCount - 1) + '].IsCorrect"  />';
+            html += '&nbsp;&nbsp; Is Correct</label>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="col-9">';
+            html += '<div class="form-group">';
+            html += '<textarea id="NewAnswerText" name="NewAnswers[' + (rowCount - 1) + '].Text"  style = "resize: vertical;height:20vh;width:100%"/>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="col-1">';
+            html += '<div class="form-group">';
+            html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#newRow').append(html);
+        });
+
+        $(document).on('click', '#removeRow', function ()
+        {
+            var rowCount = parseInt($("#total").val());
+            rowCount--;
+            $("#total").val(rowCount);
+            $(this).closest('#inputRow').remove();
+        });
+
+        function initImageUpload(box) {
+            let uploadField = box.querySelector('.image-upload');
+
+            uploadField.addEventListener('change', getFile);
+
+            function getFile(e){
+                let file = e.currentTarget.files[0];
+                checkType(file);
+            }
+  
+            function previewImage(file){
+                let thumb = box.querySelector('.js--image-preview'),
+                reader = new FileReader();
+
+                reader.onload = function() {
+                    thumb.style.backgroundImage = 'url(' + reader.result + ')';
+                }
+                reader.readAsDataURL(file);
+                thumb.className += ' js--no-default';
+            }
+
+            function checkType(file){
+                let imageType = /image.*/;
+                if (!file.type.match(imageType)) {
+                    throw 'Datei ist kein Bild';
+                } else if (!file){
+                    throw 'Kein Bild gewählt';
+                } else {
+                    previewImage(file);
+                }
+            }
+        }
+
+        // initialize box-scope
+        var boxes = document.querySelectorAll('.box');
+
+        for (let i = 0; i < boxes.length; i++) {
+            let box = boxes[i];
+            initDropEffect(box);
+            initImageUpload(box);
+        }
+
+        /// drop-effect
+        function initDropEffect(box){
+            let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
+  
+            // get clickable area for drop effect
+            area = box.querySelector('.js--image-preview');
+            area.addEventListener('click', fireRipple);
+  
+            function fireRipple(e){
+                area = e.currentTarget
+                // create drop
+                if(!drop){
+                drop = document.createElement('span');
+                drop.className = 'drop';
+                this.appendChild(drop);
+            }
+            // reset animate class
+            drop.className = 'drop';
+    
+            // calculate dimensions of area (longest side)
+            areaWidth = getComputedStyle(this, null).getPropertyValue("width");
+            areaHeight = getComputedStyle(this, null).getPropertyValue("height");
+            maxDistance = Math.max(parseInt(areaWidth, 10), parseInt(areaHeight, 10));
+
+            // set drop dimensions to fill area
+            drop.style.width = maxDistance + 'px';
+            drop.style.height = maxDistance + 'px';
+    
+            // calculate dimensions of drop
+            dropWidth = getComputedStyle(this, null).getPropertyValue("width");
+            dropHeight = getComputedStyle(this, null).getPropertyValue("height");
+    
+            // calculate relative coordinates of click
+            // logic: click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center
+            x = e.pageX - this.offsetLeft - (parseInt(dropWidth, 10)/2);
+            y = e.pageY - this.offsetTop - (parseInt(dropHeight, 10)/2) - 30;
+    
+            // position drop and animate
+            drop.style.top = y + 'px';
+            drop.style.left = x + 'px';
+            drop.className += ' animate';
+            e.stopPropagation();
+    
+            }
+        }
+
+        $('form').on('change', ':checkbox', function () {
+            if (this.checked) {
+                $(this).val(true);
+            }
+            else {
+                $(this).val(false);
+            }
+        });
+
+    </script>
+  
+    }

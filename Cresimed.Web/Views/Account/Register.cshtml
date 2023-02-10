@@ -1,0 +1,483 @@
+﻿@using Cresimed.Core.Entities.ViewModel.Web
+@{
+    Layout = null;
+}
+@model RegisterViewModel
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Cresimed - Registro</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/templateCampus/assets/img/favicon/favicon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/fontawesome.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/flag-icons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/core.css"  />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/theme-default.css"/>
+    <link rel="stylesheet" href="~/templateCampus/assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <!-- Vendor -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/pages/page-auth.css" />
+    <!-- Helpers -->
+    <script src="~/templateCampus/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="~/templateCampus/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="~/templateCampus/assets/js/config.js"></script>
+</head>
+
+<body>
+    <!-- Content -->
+
+    <div class="authentication-wrapper authentication-cover">
+        <div class="authentication-inner row m-0">
+            <!-- Left Text -->
+            <div class="d-none d-lg-flex col-lg-4 align-items-center justify-content-end p-5 pe-0">
+                <div class="w-px-400">
+                    <img src="../templateCampus/assets/img/illustrations/create-account-light.png"
+                         class="img-fluid scaleX-n1-rtl"
+                         alt="multi-steps"
+                         width="600" />
+                </div>
+            </div>
+            <!-- /Left Text -->
+            <!--  Multi Steps Registration -->
+            <div class="d-flex col-lg-8 authentication-bg p-sm-5 p-3">
+                <div class="d-flex flex-column w-px-700 mx-auto">
+                    <!-- Logo -->
+                    <div class="app-brand border-bottom mx-3 mb-4">
+                            <span class="app-brand-logo demo">
+                                <img src="~/templateCampus/assets/img/favicon/Logo.png" />
+                            </span>
+                            <span class="app-brand-text demo h3 mb-0 fw-bold">Cresimed</span>
+                    </div>
+                    <!-- /Logo -->
+
+                    <div class="my-auto">
+                        <div id="multiStepsValidation" class="bs-stepper shadow-none">
+                            <div class="bs-stepper-header">
+                                <div class="step" data-target="#accountDetailsValidation">
+                                    <button type="button" class="step-trigger">
+                                        <span class="bs-stepper-circle">
+                                            <i class="bx bx-home"></i>
+                                        </span>
+                                        <span class="bs-stepper-label">
+                                            <span class="bs-stepper-title">Cuenta</span>
+                                            <span class="bs-stepper-subtitle">Detalles de Cuenta</span>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#personalInfoValidation">
+                                    <button type="button" class="step-trigger">
+                                        <span class="bs-stepper-circle">
+                                            <i class="bx bx-user"></i>
+                                        </span>
+                                        <span class="bs-stepper-label">
+                                            <span class="bs-stepper-title">Personal</span>
+                                            <span class="bs-stepper-subtitle">Información</span>
+                                        </span>
+                                    </button>
+                                </div>
+                                <div class="line"></div>
+                                <div class="step" data-target="#billingLinksValidation">
+                                    <button type="button" class="step-trigger">
+                                        <span class="bs-stepper-circle">
+                                            <i class="bx bx-detail"></i>
+                                        </span>
+                                        <span class="bs-stepper-label">
+                                            <span class="bs-stepper-title">Otros</span>
+                                            <span class="bs-stepper-subtitle">Detalles</span>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bs-stepper-content pt-4">
+                                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @id = "multiStepsForm", @onSubmit = "return false" }))
+                                {
+                                    <!-- Account Details -->
+                                    <div id="accountDetailsValidation" class="content">
+                                        <div class="content-header mb-3">
+                                            <h4>Información de Cuenta </h4>
+                                            <span>Completar todos los campos </span>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsUsername">Usuario</label>
+                                                @Html.TextBoxFor(m=>m.Username,new {@type="text", @name="multiStepsUsername",@id="multiStepsUsername",@class="form-control",@placeholder="johndoe"})
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsEmail">Email</label>
+                                                @Html.TextBoxFor(m=>m.Email,new {@type="email", @name="multiStepsEmail", @id="multiStepsEmail", @class="form-control", @placeholder="john.doe@email.com" })
+                                            </div>
+                                            <div class="col-sm-6 form-password-toggle">
+                                                <label class="form-label" for="multiStepsPass">Contraseña</label>
+                                                <div class="input-group input-group-merge">
+                                                    @Html.TextBoxFor(m=>m.Password,new {@type="password" ,@id="multiStepsPass", @name="multiStepsPass", @class="form-control", @placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" }) 
+                                                           
+                                                    <span class="input-group-text cursor-pointer" id="multiStepsPass2">
+                                                        <i class="bx bx-hide"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 form-password-toggle">
+                                                <label class="form-label" for="multiStepsConfirmPass">Confirmar Contraseña</label>
+                                                <div class="input-group input-group-merge">
+                                                    
+                                                    <input type="password"
+                                                           id="multiStepsConfirmPass"
+                                                           name="multiStepsConfirmPass"
+                                                           class="form-control"
+                                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                           aria-describedby="multiStepsConfirmPass2" />
+                                                    <span class="input-group-text cursor-pointer" id="multiStepsConfirmPass2">
+                                                        <i class="bx bx-hide"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 d-flex justify-content-between mt-4">
+                                                <button class="btn btn-label-secondary btn-prev" disabled>
+                                                    <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+                                                    <span class="d-sm-inline-block d-none">Previous</span>
+                                                </button>
+                                                <button class="btn btn-primary btn-next">
+                                                    <span class="d-sm-inline-block d-none me-sm-1 me-0">Next</span>
+                                                    <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Personal Info -->
+                                    <div id="personalInfoValidation" class="content">
+                                        <div class="content-header mb-3">
+                                            <h4>Información Personal </h4>
+                                            <span></span>
+                                        </div>
+                                        <div class="row g-3">
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsFirstName"> Nombre</label>
+                                                @Html.TextBoxFor(m=>m.Name,new {@type="text", @name="multiStepsFirstName",@id="multiStepsFirstName",@class="form-control",@placeholder="John"})
+                                              
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsLastName">Apellido</label>
+                                                @Html.TextBoxFor(m=>m.Name,new {@type="text", @name="multiStepsLastName",@id="multiStepsLastName",@class="form-control",@placeholder="Doe"})
+
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsMobile">Telefono</label>
+                                                <div class="input-group input-group-merge">
+                                                    <span class="input-group-text">US (+1)</span>
+
+                                                    <input type="text"
+                                                           id=""
+                                                           name="multiStepsMobile"
+                                                           class="form-control multi-steps-mobile"
+                                                           placeholder="202 555 0111" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsPincode">CP</label>
+                                                <input type="text"
+                                                       id="multiStepsPincode"
+                                                       name="multiStepsPincode"
+                                                       class="form-control multi-steps-pincode"
+                                                       placeholder="Postal Code"
+                                                       maxlength="6" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label" for="multiStepsAddress">Direccion</label>
+                                                <input type="text"
+                                                       id="multiStepsAddress"
+                                                       name="multiStepsAddress"
+                                                       class="form-control"
+                                                       placeholder="Address" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="form-label" for="multiStepsArea">Barrio</label>
+                                                <input type="text"
+                                                       id="multiStepsArea"
+                                                       name="multiStepsArea"
+                                                       class="form-control"
+                                                       placeholder="Area/Landmark" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsCity">Ciudad</label>
+                                                <input type="text" id="multiStepsCity" class="form-control" placeholder="Jackson" />
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="form-label" for="multiStepsState">Provincia</label>
+                                                <select id="multiStepsState" class="select2 form-select" data-allow-clear="true">
+                                                    <option value="">Select</option>
+                                                    <option value="AL">Alabama</option>
+                                                    <option value="AK">Alaska</option>
+                                                    <option value="AZ">Arizona</option>
+                                                    <option value="AR">Arkansas</option>
+                                                    <option value="CA">California</option>
+                                                    <option value="CO">Colorado</option>
+                                                    <option value="CT">Connecticut</option>
+                                                    <option value="DE">Delaware</option>
+                                                    <option value="DC">District Of Columbia</option>
+                                                    <option value="FL">Florida</option>
+                                                    <option value="GA">Georgia</option>
+                                                    <option value="HI">Hawaii</option>
+                                                    <option value="ID">Idaho</option>
+                                                    <option value="IL">Illinois</option>
+                                                    <option value="IN">Indiana</option>
+                                                    <option value="IA">Iowa</option>
+                                                    <option value="KS">Kansas</option>
+                                                    <option value="KY">Kentucky</option>
+                                                    <option value="LA">Louisiana</option>
+                                                    <option value="ME">Maine</option>
+                                                    <option value="MD">Maryland</option>
+                                                    <option value="MA">Massachusetts</option>
+                                                    <option value="MI">Michigan</option>
+                                                    <option value="MN">Minnesota</option>
+                                                    <option value="MS">Mississippi</option>
+                                                    <option value="MO">Missouri</option>
+                                                    <option value="MT">Montana</option>
+                                                    <option value="NE">Nebraska</option>
+                                                    <option value="NV">Nevada</option>
+                                                    <option value="NH">New Hampshire</option>
+                                                    <option value="NJ">New Jersey</option>
+                                                    <option value="NM">New Mexico</option>
+                                                    <option value="NY">New York</option>
+                                                    <option value="NC">North Carolina</option>
+                                                    <option value="ND">North Dakota</option>
+                                                    <option value="OH">Ohio</option>
+                                                    <option value="OK">Oklahoma</option>
+                                                    <option value="OR">Oregon</option>
+                                                    <option value="PA">Pennsylvania</option>
+                                                    <option value="RI">Rhode Island</option>
+                                                    <option value="SC">South Carolina</option>
+                                                    <option value="SD">South Dakota</option>
+                                                    <option value="TN">Tennessee</option>
+                                                    <option value="TX">Texas</option>
+                                                    <option value="UT">Utah</option>
+                                                    <option value="VT">Vermont</option>
+                                                    <option value="VA">Virginia</option>
+                                                    <option value="WA">Washington</option>
+                                                    <option value="WV">West Virginia</option>
+                                                    <option value="WI">Wisconsin</option>
+                                                    <option value="WY">Wyoming</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 d-flex justify-content-between mt-4">
+                                                <button class="btn btn-primary btn-prev">
+                                                    <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+                                                    <span class="d-sm-inline-block d-none">Previous</span>
+                                                </button>
+                                                <button class="btn btn-primary btn-next">
+                                                    <span class="d-sm-inline-block d-none me-sm-1 me-0">Next</span>
+                                                    <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Billing Links -->
+                                    <div id="billingLinksValidation" class="content">
+                                        <div class="content-header mb-3">
+                                            <h4>Select Plan</h4>
+                                            <span>Select plan as per your requirement</span>
+                                        </div>
+                                        <!-- Custom plan options -->
+                                        <div class="row gap-md-0 gap-3 mb-4">
+                                            <div class="col-md">
+                                                <div class="form-check custom-option custom-option-icon">
+                                                    <label class="form-check-label custom-option-content" for="basicOption">
+                                                        <span class="custom-option-body">
+                                                            <span class="d-block h4">Basic</span>
+                                                            <small>A simple start for start ups & Students</small>
+                                                            <span class="d-flex justify-content-center">
+                                                                <sup class="text-primary fs-big lh-1 mt-4">$</sup>
+                                                                <span class="display-5 h1 fw-normal mb-0 text-primary">0</span>
+                                                                <span class="mt-auto mb-2">/month</span>
+                                                            </span>
+                                                        </span>
+                                                        <input name="customRadioIcon"
+                                                               class="form-check-input"
+                                                               type="radio"
+                                                               value=""
+                                                               id="basicOption" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-check custom-option custom-option-icon">
+                                                    <label class="form-check-label custom-option-content" for="standardOption">
+                                                        <span class="custom-option-body">
+                                                            <span class="d-block h4">Standard</span>
+                                                            <small>For small to medium businesses</small>
+                                                            <span class="d-flex justify-content-center">
+                                                                <sup class="text-primary fs-big lh-1 mt-4">$</sup>
+                                                                <span class="display-5 h1 fw-normal mb-0 text-primary">99</span>
+                                                                <span class="mt-auto mb-2">/month</span>
+                                                            </span>
+                                                        </span>
+                                                        <input name="customRadioIcon"
+                                                               class="form-check-input"
+                                                               type="radio"
+                                                               value=""
+                                                               id="standardOption"
+                                                               checked />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="form-check custom-option custom-option-icon">
+                                                    <label class="form-check-label custom-option-content" for="enterpriseOption">
+                                                        <span class="custom-option-body">
+                                                            <span class="d-block h4">Enterprise</span>
+                                                            <small>Solution for enterprise & organizations</small>
+                                                            <span class="d-flex justify-content-center">
+                                                                <sup class="text-primary fs-big lh-1 mt-4">$</sup>
+                                                                <span class="display-5 h1 fw-normal mb-0 text-primary">499</span>
+                                                                <span class="mt-auto mb-2">/year</span>
+                                                            </span>
+                                                        </span>
+                                                        <input name="customRadioIcon"
+                                                               class="form-check-input"
+                                                               type="radio"
+                                                               value=""
+                                                               id="enterpriseOption" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/ Custom plan options -->
+                                        <div class="content-header mb-3">
+                                            <h4 class="mb-0">Payment Information</h4>
+                                            <small>Enter your card information</small>
+                                        </div>
+                                        <!-- Credit Card Details -->
+                                        <div class="row g-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label w-100" for="multiStepsCard">Card Number</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input id="multiStepsCard"
+                                                           class="form-control multi-steps-card"
+                                                           name="multiStepsCard"
+                                                           type="text"
+                                                           placeholder="1356 3215 6548 7898"
+                                                           aria-describedby="multiStepsCardImg" />
+                                                    <span class="input-group-text cursor-pointer" id="multiStepsCardImg">
+                                                        <span class="card-type"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <label class="form-label" for="multiStepsName">Name On Card</label>
+                                                <input type="text"
+                                                       id="multiStepsName"
+                                                       class="form-control"
+                                                       name="multiStepsName"
+                                                       placeholder="John Doe" />
+                                            </div>
+                                            <div class="col-6 col-md-4">
+                                                <label class="form-label" for="multiStepsExDate">Expiry Date</label>
+                                                <input type="text"
+                                                       id="multiStepsExDate"
+                                                       class="form-control multi-steps-exp-date"
+                                                       name="multiStepsExDate"
+                                                       placeholder="MM/YY" />
+                                            </div>
+                                            <div class="col-6 col-md-3">
+                                                <label class="form-label" for="multiStepsCvv">CVV Code</label>
+                                                <div class="input-group input-group-merge">
+                                                    <input type="text"
+                                                           id="multiStepsCvv"
+                                                           class="form-control multi-steps-cvv"
+                                                           name="multiStepsCvv"
+                                                           maxlength="3"
+                                                           placeholder="654" />
+                                                    <span class="input-group-text cursor-pointer" id="multiStepsCvvHelp">
+                                                        <i class="bx bx-help-circle text-muted"
+                                                           data-bs-toggle="tooltip"
+                                                           data-bs-placement="top"
+                                                           title="Card Verification Value"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 d-flex justify-content-between mt-4">
+                                                <button class="btn btn-primary btn-prev">
+                                                    <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+                                                    <span class="d-sm-inline-block d-none">Anterior</span>
+                                                </button>
+                                                <button type="submit" class="btn btn-success btn-next btn-submit">Registrarme</button>
+                                            </div>
+                                        </div>
+                                        <!--/ Credit Card Details -->
+                                    </div>
+                                
+}   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / Multi Steps Registration -->
+        </div>
+    </div>
+
+    <script>
+        // Check selected custom option
+        window.Helpers.initCustomOptionCheck();
+    </script>
+
+    <!-- / Content -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="~/templateCampus/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/popper/popper.js"></script>
+    <script src="~/templateCampus/assets/vendor/js/bootstrap.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/libs/hammer/hammer.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/typeahead-js/typeahead.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="~/templateCampus/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/bs-stepper/bs-stepper.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/select2/select2.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="~/templateCampus/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="~/templateCampus/assets/js/pages-auth-multisteps.js"></script>
+</body>

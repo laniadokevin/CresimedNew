@@ -1,0 +1,32 @@
+﻿@using Cresimed.Core.Entities.ViewModel.Campus
+@model ExamStatsViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!-- Line Charts -->
+<div class="col-12">
+    <div class="card">
+        <div class="card-header header-elements">
+            <div>
+                <h5 class="card-title mb-0">Statistics</h5>
+                <small class="text-muted">Commercial networks and enterprises</small>
+            </div>
+            <div class="card-header-elements ms-auto py-0">
+                <h5 class="fw-bold mb-0 me-3">$ 78,000</h5>
+                <span class="badge bg-label-secondary">
+                    <i class="bx bx-up-arrow-alt bx-xs text-success"></i>
+                    <span class="align-middle">37%</span>
+                </span>
+            </div>
+        </div>
+        <div class="card-body">
+            <canvas id="lineChart" class="chartjs" data-height="500"></canvas>
+        </div>
+    </div>
+</div>
+@section Scripts 
+{
+  
+}
+
+

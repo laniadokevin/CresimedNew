@@ -1,0 +1,44 @@
+﻿
+@using System.Security.Claims;
+@using System.Data
+@using Cresimed.Core.Entities.Database
+@model List<Question>
+    
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+}
+
+           <!-- partial -->
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <h1 class="h1">Import Questions</h1>
+        <div class="row" style="border: 1px solid #2c2e33 ">
+
+            <form asp-controller="Edition" asp-action="ImportQuestions" method="post" enctype="multipart/form-data">
+                 <div class="modal-body">
+                        <div class="form-group">
+                            <label> Questions </label>
+                            <input type="file" name="file" class="form-control file-upload-info" />
+                    
+                        </div>
+                  </div>
+                
+                  <div class="modal-footer" style="border:none!important;">
+                    <a class="btn btn-secondary" href="@Url.Action("Questions","Grids")" >
+                        <i class="mdi mdi-keyboard-backspace"> </i>
+                    </a>
+                    
+                    <button type="submit" class="btn btn-primary" >
+                        <i class="mdi mdi-content-save"> </i>
+                    </button>
+                  </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+    @section Scripts {
+
+    }

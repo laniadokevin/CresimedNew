@@ -1,0 +1,158 @@
+﻿        
+@using System.Security.Claims;
+@using System.Data;
+@using Cresimed.Core.Entities.ViewModel.Admin.Grid;
+@model ExamHistoryGridViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+    var prevDisabled = !Model.Exams.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Exams.HasNextPage ? "disabled" : "";
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<div class="container">
+
+    <div class="card">
+
+    <div class="card-body">
+
+            <h1 class="h1">Historial de exámenes</h1>
+        <br />
+        <h6>
+            Total: @ViewData["TotalExams"] &nbsp;&nbsp
+            Mostrando: @ViewData["ShowingExams"] &nbsp;&nbsp
+
+        </h6>
+        <div class="row">
+
+                <div class="card-datatable text-nowrap">
+                    <table class="table datatables-ajax table table-bordered text-center">
+                    <thead>
+                        <tr>
+                                <th>
+                                    <a asp-action="HistoryTests" asp-route-sortOrder="@ViewData["ExamSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                        Fecha
+                                    </a>
+                                </th>
+                                <th>
+                                    Nota
+                                </th>
+                                <th>
+                                    Tiempo de Examen
+                                </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < @Model.Exams.Count(); i++)
+                        {
+
+                            var end = Model.Exams[i].DateEnd.HasValue ? Model.Exams[i].DateEnd.Value : Model.Exams[i].DateStarted;
+                            TimeSpan t = TimeSpan.FromSeconds((end - Model.Exams[i].DateStarted).TotalSeconds);
+
+                            string totalTime = string.Format("{0:D2}h {1:D2}m {2:D2}s",
+                            t.Hours,
+                            t.Minutes,
+                            t.Seconds,
+                            t.Milliseconds);
+                                                             
+                            decimal corr = Model.Exams[i].ExamDetails.Where(x => x.IsCorrect == true).Count();
+                            decimal tot = Model.Exams[i].QuestionsAmount;
+                            double div = Math.Round(((float)corr / (float)tot) * 100);
+
+                                        
+                            <tr>
+
+                                    <td>
+                                        @Html.Raw(Model.Exams[i].DateStarted.ToString("dd/MM/yyyy HH:mm"))
+                                    </td>
+                                    <td >
+                                        <div class ="d-flex justify-content-between">
+
+                                            @Html.Raw("<span>"+Model.Exams[i].ExamDetails.Where(x=>x.IsCorrect==true).Count()+"</span>")
+                                            <span>
+                                                /
+                                            </span>
+
+                                            @Html.Raw("<span>" + Model.Exams[i].QuestionsAmount + "</span>")
+                                        </div>
+                                        <br>
+                                        <div class="progress mb-3">
+                                            <div class="progress-bar bg-success"
+                                             role="progressbar"
+                                             style="width: @(div)%"
+                                             aria-valuenow="@(div)"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                                @(div)%
+                                            </div>
+                                            <div class="progress-bar bg-danger"
+                                             role="progressbar"
+                                             style="width: @(100 - div)%"
+                                             aria-valuenow="@(100 - div)"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                                @(100-div)%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <span>
+                                            @Html.Raw(totalTime)
+                                        </span>
+                                    </td>
+                                 <td class="text-center">
+                                    <a class="btn btn-outline-light" style="color:black" href="/Exam/HistoryTest?examid=@Model.Exams[i].ExamID">
+                                        <i class="fa fa-eye"></i>
+                                        Ver
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+
+                <a asp-action="HistoryTests"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.Exams.PageIndex - 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @prevDisabled">
+                    Anterior
+                </a>
+                <a asp-action="HistoryTests"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.Exams.PageIndex + 1)"
+                   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                   class="btn btn-default @nextDisabled">
+                    Siguiente
+                </a>
+            </div>
+            <div class="col-4">
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+
+     
+       
+
+
+<script src="~/js/create-exam.js"></script>
+
+@section Scripts {
+}
+

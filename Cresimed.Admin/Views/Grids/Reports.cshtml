@@ -1,0 +1,192 @@
+﻿@using System.Security.Claims;
+@using System.Data
+@using Cresimed.Core.Entities.Enum
+@using Cresimed.Core.Entities.ViewModel.Admin.Grid
+@model ReportGridViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = User.FindFirst(ClaimTypes.Name).Value;
+    var prevDisabled = !Model.Reports.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Reports.HasNextPage ? "disabled" : "";
+}
+
+<!-- partial -->
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+        <h1 class="h1">Reports</h1>
+        <br />
+        <form asp-action="Reports" method="get">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-actions no-color">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-1 col-form-label">Search: </label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="SearchString" class="form-control" value="@ViewData["CurrentFilter"]" />
+
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="submit" class="btn btn-secondary">
+                                            <i class="mdi mdi-magnify"> </i>
+                                        </button>
+
+                                        <a asp-action="Reports" class="btn btn-primary"> <i class="mdi mdi-refresh"> </i> </a>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <h6>
+            Total: @ViewData["TotalReports"] &nbsp;&nbsp
+            Filtered: @ViewData["FilteredReports"] &nbsp;&nbsp
+            Showing: @ViewData["ShowingReports"] &nbsp;&nbsp
+
+        </h6>
+        <div class="row">
+            <div class="row">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <a asp-action="Reports" asp-route-sortOrder="@ViewData["IDSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                        ID
+                                    </a>
+                                </th>
+                                <th>
+                                    <a asp-action="Reports" asp-route-sortOrder="@ViewData["ReportSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                                        Message
+                                    </a>
+                                </th>
+                                <th>
+                                    # Question
+                                </th>
+                                <th>
+                                    Report Type
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < @Model.Reports.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.Raw(Model.Reports[i].ReportID)
+                                    </td>
+                                    <td>
+                                        @Html.Raw(Model.Reports[i].Message)
+                                    </td>
+                                    <td class="text">
+                                        @Html.Raw(Model.Reports[i].QuestionID)
+                                    </td>
+                                    <td class="text">
+                                        
+                                        @switch (Model.Reports[i].Type){
+                                            case (int)ReportQuestionType.Otro:
+                                                @Html.Raw("Otro")
+                                                break;
+                                            case (int)ReportQuestionType.RedacciónYOrtografía:
+                                                @Html.Raw("Redacción y Ortografía")
+                                                break;
+                                            case (int)ReportQuestionType.ErrorEnLaPregunta:
+                                                @Html.Raw("Error En Pregunta")
+                                                break;
+                                            case (int)ReportQuestionType.RespuestaIncorrecta:
+                                                @Html.Raw("Respuesta Incorrecta")
+                                                break;
+                                            case (int)ReportQuestionType.ExplicaciónIncorrecta:
+                                                @Html.Raw("Explicación Incorrecta")
+                                                break;
+                                            case (int)ReportQuestionType.ProblemaEnLaImagen:
+                                                @Html.Raw("Problema En Imagen")
+                                                break;
+                                            case (int)ReportQuestionType.ProblemaTécnico:
+                                                @Html.Raw("Problema Tecnico")
+                                                break;
+                                            default:
+                                                break;
+
+                                        }
+                                       
+                                    </td>
+                                    <td >
+
+                                        <a class="btn btn-outline-info" href="@Url.Action("ViewReport", "Views",new { id = @Model.Reports[i].ReportID })">
+                                            <i class="mdi mdi-eye"></i>
+                                        </a>
+                                        <a class="btn btn-outline-info" href="@Url.Action("DeleteReport", "Edition",new { id = @Model.Reports[i].ReportID })">
+                                            <i class='mdi mdi-delete'></i>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                </div>
+                <div class="col-4">
+
+                    <a asp-action="Reports"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.Reports.PageIndex - 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @prevDisabled">
+                        Previous
+                    </a>
+                    <a asp-action="Reports"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.Reports.PageIndex + 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]"
+                       class="btn btn-default @nextDisabled">
+                        Next
+                    </a>
+                </div>
+                <div class="col-4">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <!-- plugins:js -->
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/vendors/progressbar.js/progressbar.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap.min.js"></script>
+    <script src="~/vendors/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/vendors/owl-carousel-2/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.cookie.js" type="text/javascript"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/hoverable-collapse.js"></script>
+    <script src="~/js/misc.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script src="~/js/dashboard.js"></script>
+    <!-- End custom js for this page -->
+    }
