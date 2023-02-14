@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="mercadopago-sdk" Version="2.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Cresimed.Core\Cresimed.Core.csproj" />
     <ProjectReference Include="..\Cresimed.Data\Cresimed.Data.csproj" />
   </ItemGroup>

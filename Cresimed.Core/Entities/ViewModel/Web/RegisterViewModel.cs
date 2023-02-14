@@ -19,6 +19,10 @@ namespace Cresimed.Core.Entities.ViewModel.Web
         public string FullName { get; set; }
         public string Email { get; set; }
         public DateTime DateAdded { get; set; }
+        public string Country { get; set; }
+        public string University { get; set; }
+        public string Province { get; set; }
+        public int LastYear { get; set; }
         public Preference Preference { get; set; }
     }
 }

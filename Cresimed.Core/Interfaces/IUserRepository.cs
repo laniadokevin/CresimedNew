@@ -26,7 +26,7 @@ namespace Cresimed.Core.Interfaces
         bool CheckEmailDisponibility(string email);
         bool UpdatePwd(string password);
         User UpdateUserAverage(int userID, decimal average);
-        decimal GetPercentil(int userID);
+        List<decimal> GetPercentil(int userID);
 
     }
 }

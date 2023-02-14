@@ -10,12 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSession();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(120);
+});
 
 builder.Services.AddDbContext<CresimedDBContext>(options => {
-    options.UseLazyLoadingProxies();
+    //options.UseLazyLoadingProxies();
     options.UseSqlServer(builder.Configuration.GetConnectionString("CresimedDBContext"));
-    options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
+    //options.ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning));
 
 });
 builder.Services.AddScoped<ILogRepository, LogRepository>();

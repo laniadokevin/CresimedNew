@@ -8,11 +8,16 @@ using Cresimed.Core.Entities.Database;
 
 namespace Cresimed.Core.Entities.ViewModel.Campus
 {
-    public class DashboardViewModel
+    public class StatisticsViewModel
     {
-        public ExamStatsViewModel PieChart { get; set; }
+        public ExamStatsViewModel ExamStats { get; set; }
         public List<decimal> PercentilChart { get; set; }
-        public List<Exam> Last5Exams{ get; set; }
-        
+        public List<Percentil> Percentils { get; set; }
+
+        public int CantExams { get; set; }
+        public double TimeAverageQuestion { get; set; }
+        public int TotalTimeSpent { get; set; }
+
+
     }
 }

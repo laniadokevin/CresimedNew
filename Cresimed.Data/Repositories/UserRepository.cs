@@ -251,8 +251,9 @@ namespace Cresimed.Data.Repositories
             return user;
         }
 
-        public decimal GetPercentil(int userID)
+        public List<decimal> GetPercentil(int userID)
         {
+            List<decimal> rta = new List<decimal>();
             decimal percentil = 0;
             decimal average = 0;
 
@@ -273,14 +274,18 @@ namespace Cresimed.Data.Repositories
 
             percentil = Decimal.Round((decimal)underUser / (decimal)totUsers,4,MidpointRounding.AwayFromZero)*100;
 
+            rta.Add(percentil);
+
             var averageUser = averagesList.Sum(x => x) / totUsers;
             
             var underAverage = averagesList.Where(x => x < averageUser).Count();
 
             average = Decimal.Round((decimal)underAverage / (decimal)totUsers,4,MidpointRounding.AwayFromZero)*100;
 
+            rta.Add(average);
 
-            return percentil;
+
+            return rta;
         }
     }
 }

@@ -55,9 +55,7 @@ namespace Cresimed.Campus.Controllers
             }
         }
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "SuperAdmin, Admin, Customer")]
         [Route("~/Account/welcome")]
         public IActionResult Welcome()
         {
@@ -67,13 +65,11 @@ namespace Cresimed.Campus.Controllers
 
             view.PieChart = _examRepository.GetAllBySpecialty(userID);
             view.Last5Exams = _examRepository.GetLast5Exams(userID);
-            view.PercentilChart = _percentilRepository.GetPercentilsForUser(userID);
+            view.PercentilChart = _userRepository.GetPercentil(userID);
             
-            _userRepository.GetPercentil(userID);
+            _percentilRepository.GetPercentilsForUser(userID);
 
-            if (view.PercentilChart.Percentils.Count() > 10)
-                view.PercentilChart.Percentils = view.PercentilChart.Percentils.Take(10).ToList();
-
+            
             return View("Welcome", view);
         }
 
@@ -85,9 +81,7 @@ namespace Cresimed.Campus.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "SuperAdmin, Admin, Customer")]
         [Route("~/Account/ResetPwd")]
         public IActionResult ResetPwd(string password)
         {
@@ -102,9 +96,7 @@ namespace Cresimed.Campus.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "SuperAdmin, Admin, Customer")]
         [Route("~/Account/ResetPwd")]
         public IActionResult ResetPwd()
         {
@@ -116,7 +108,8 @@ namespace Cresimed.Campus.Controllers
         public IActionResult AccessDenied()
         {
             ViewBag.error = "Access Denied";
-            return View("Index");
+            return RedirectToAction("Index", "Account");
+
         }
 
 

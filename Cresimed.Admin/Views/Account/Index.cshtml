@@ -33,7 +33,9 @@
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-left mb-3">Login</h3>
  <form method="post" asp-controller="account" asp-action="login">
-                  @ViewBag.error
+                  <span style="color:red">
+                    @ViewBag.error
+                  </span>
                   <div class="form-group">
                     <label>Username or email *</label>
                     <input type="text" class="form-control p_input" name="username" />

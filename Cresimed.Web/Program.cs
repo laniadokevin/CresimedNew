@@ -15,6 +15,7 @@ builder.Services.AddDbContext<CresimedDBContext>(options => {
 });
 builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddScoped<IFaqRepository, FaqRepository>();
 

@@ -145,7 +145,10 @@ function nextPrev(n) {
 
 		// if you have reached the end of the form...
 		if (currentTab >= x.length) {
-
+			$('#nextBtn').on('click', function () {
+				
+				return false;
+			});
 			// ... the form gets submitted:
 			SubmitExam();
 
@@ -231,11 +234,11 @@ function fillCorrectionSection() {
 
 	for (i = 0; i < rtas.length; i++) {
 		if (rtas[i].checked) {
-			optElegida = rtas[i].getAttribute("NroOpcion");//opcion elegida por el usuario
-			$("#RtaCorrecta_" + currentTab).text(optElegida);
+			optElegida = rtas[i].getAttribute("nroopcion");//opcion elegida por el usuario
 		}
 		if (rtas[i].getAttribute("iscorrect").toLowerCase() === "true") {
-			optCorrecta = rtas[i].getAttribute("NroOpcion");//opcion elegida por el usuario
+			optCorrecta = rtas[i].getAttribute("nroopcion");//opcion correcta
+			$("#RtaCorrecta_" + currentTab).text(optCorrecta);
 		}
 	}
 
@@ -358,7 +361,7 @@ $(document).ready(function () {
 	$(".textoPreguntas").each(function () {
 		$(this).text($(this).text().replace("                                    ", ""));
 	});
-	//preventAllInteraction(); ACTIVAR PARA PRODUCCION
+	preventAllInteraction(); 
 
 	timeLimitExam = $("#TimeLimitExam").text();
 	$(".ExplanationSection").hide();

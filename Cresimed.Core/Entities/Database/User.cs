@@ -25,10 +25,15 @@ namespace Cresimed.Core.Entities.Database
         public DateTime? DateDeleted { get; set; }
         public bool Deleted { get; set; }
         public decimal UserAverage { get; set; }
+        public string Country { get; set; }
+        public string University { get; set; }
+        public string Province { get; set; }
+        public int LastYear { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
-        
+
         [ForeignKey("PercentilID")]
         public virtual ICollection<Percentil> Percentils { get; set; }
     }
+
 }

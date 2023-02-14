@@ -9,6 +9,7 @@ using Cresimed.Core.Entities.ViewModel.Campus;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Cresimed.Core.Entities.ViewModel.Admin.Grid;
 using Cresimed.Data.Repositories;
+using MercadoPago.Resource.User;
 
 namespace Cresimed.Campus.Controllers
 {
@@ -49,9 +50,7 @@ namespace Cresimed.Campus.Controllers
         }
 
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "SuperAdmin, Admin, Customer")]
         [Route("~/Exam/CreateTest")]
         public IActionResult CreateTest()
         {
@@ -79,9 +78,7 @@ namespace Cresimed.Campus.Controllers
             return View("StartTest", exam);
         }
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "SuperAdmin, Admin, Customer")]
         [Route("~/Exam/StartTest")]
         public IActionResult StartTest(ExamViewModel e)
         {
@@ -152,13 +149,24 @@ namespace Cresimed.Campus.Controllers
         }
 
         [HttpGet]
-        [Route("~/Exam/TestStats")]
-        public IActionResult TestStats()
+        [Route("~/Exam/Statistics")]
+        public IActionResult Statistics()
         {
-            var userId = int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault());
+            StatisticsViewModel view = new StatisticsViewModel();
 
-            var correctas = _examRepository.GetAllExams(userId);
-            var view = _examRepository.GetAllBySpecialty(userId);
+            var userID = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            view.ExamStats = _examRepository.GetAllBySpecialty(userID);
+            view.PercentilChart = _userRepository.GetPercentil(userID);
+            view.PercentilChart = _userRepository.GetPercentil(userID);
+            view.Percentils = _percentilRepository.GetListPercentilsForUser(userID);
+
+            view.CantExams = _examRepository.GetCantExams(userID);
+            view.TimeAverageQuestion = _examRepository.GetTimeAverageQuestion(userID);
+            view.TotalTimeSpent  =  _examRepository.GetTotalTimeSpent(userID);
+
+
+
 
             return View(view);
         }

@@ -32,7 +32,7 @@ namespace Cresimed.Data.Repositories
 
         public List<Career> GetAll()
         {
-            return _context.Careers.Include("Questions").Include("Country").Include("Specialties").ToList();
+            return _context.Careers.Include("Questions").Include("Country").Include("Specialties").AsSplitQuery().ToList();
 
         }
 

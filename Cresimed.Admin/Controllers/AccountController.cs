@@ -61,10 +61,13 @@ namespace Cresimed.Admin.Controllers
             return View("Welcome");
         }
 
-        [Route("/Admin/Account/access-denied")]
+        [Route("/Admin/Account/AccessDenied")]
         public IActionResult AccessDenied()
         {
-            return View("AccessDenied");
+            ViewBag.error = "Access Denied";
+
+            return View();
+
         }
 
 

@@ -21,8 +21,12 @@ namespace Cresimed.Core.Interfaces
         List<Exam> GetAllExams(int userID);
         ExamStatsViewModel GetAllBySpecialty(int userID);
         List<Exam> GetLast5Exams(int userID);
+        List<Exam> GetAllExamsClean(int userID);
+        int GetCantExams (int userID);
+        double GetTimeAverageQuestion (int userID);
+        int GetTotalTimeSpent(int userID);
 
 
-
+        
     }
 }

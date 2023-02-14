@@ -33,7 +33,7 @@ namespace Cresimed.Data.Repositories
 
         public List<Country> GetAll()
         {
-            return _context.Countries.Include("Questions").Include("Careers").Include("Specialties").ToList();
+            return _context.Countries.Include("Questions").Include("Careers").Include("Specialties").AsSplitQuery().ToList();
 
         }
         public PaginatedList<Country> GetAllFiltered(

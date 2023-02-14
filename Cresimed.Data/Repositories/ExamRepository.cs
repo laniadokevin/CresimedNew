@@ -48,7 +48,7 @@ namespace Cresimed.Data.Repositories
 
         public PaginatedList<Exam> GetAllFiltered(int userID,string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
-            var exams = _context.Exams.Where(x => x.UserID == userID).AsQueryable();
+            var exams = _context.Exams.Where(x => x.UserID == userID).Include("ExamDetails").AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -220,6 +220,16 @@ namespace Cresimed.Data.Repositories
             return null;
         }
 
+        public List<Exam> GetAllExamsClean(int userID)
+        {
+            var exams = _context.Exams
+                .Where(x => x.UserID == userID)
+                .OrderByDescending(x => x.ExamID)
+                .ToList();
+
+
+            return exams;
+        }
         public List<Exam> GetLast5Exams(int userID)
         {
             var exams = _context.Exams
@@ -227,7 +237,7 @@ namespace Cresimed.Data.Repositories
                 .OrderByDescending(x => x.ExamID)
                 .Take(5)
                 .ToList();
-        
+
 
             return exams;
         }
@@ -239,6 +249,8 @@ namespace Cresimed.Data.Repositories
             var exams = _context.Exams
                 .Where(x => x.UserID == userID)
                 .Include("ExamDetails")
+                .Include("ExamDetails.Question")
+                .Include("ExamDetails.Question.Specialty")
                 .SelectMany(x => x.ExamDetails)
                 .ToList();
 
@@ -247,7 +259,7 @@ namespace Cresimed.Data.Repositories
             var allCors = exams.Where(z => z.IsCorrect == true).Count();
 
             var allIncs = exams.Where(z => z.IsCorrect == false).Count();
-            /*
+            
             var corBySpec = exams.Where(z => z.IsCorrect == true).GroupBy(x => x.Question.SpecialtyID).ToList();
 
             var incorBySpec = exams.Where(z => z.IsCorrect == false).GroupBy(x => x.Question.SpecialtyID).ToList();
@@ -285,12 +297,50 @@ namespace Cresimed.Data.Repositories
                 }
 
             }
-            */
+            
             examStats.TotalCorrect = allCors;
             examStats.TotalIncorrect = allIncs;
             examStats.TotalCount = tot;
 
             return examStats;
+        }
+
+        public int GetCantExams(int userID)
+        {
+            var exams = _context.Exams
+               .Where(x => x.UserID == userID)
+               .Count();
+
+
+            return exams;
+        }
+
+        public double GetTimeAverageQuestion(int userID)
+        {
+            var exams = _context.Exams
+               .Include("ExamDetails")
+               .Where(x => x.UserID == userID)
+               .SelectMany(x => x.ExamDetails);
+            
+            int totTime = exams.ToList()
+                .Sum(x => x.Time).Value;
+
+            int totPreg = exams.Count();
+
+
+            return (double)totTime / (double)totPreg;
+        }
+
+        public int GetTotalTimeSpent(int userID)
+        {
+            int totTime = _context.Exams
+               .Include("ExamDetails")
+               .Where(x => x.UserID == userID)
+               .SelectMany(x => x.ExamDetails)
+               .ToList().Sum(x => x.Time).Value;
+
+
+            return totTime;
         }
     }
 }

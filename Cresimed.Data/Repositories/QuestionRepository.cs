@@ -76,7 +76,7 @@ namespace Cresimed.Data.Repositories
         }
         public Question GetById(int id)
         {
-            var p = _context.Questions.Where(x => x.QuestionID == id).Include("Answers").Include("KeyWords").SingleOrDefault();
+            var p = _context.Questions.Where(x => x.QuestionID == id).Include("Answers").Include("KeyWords").AsSplitQuery().SingleOrDefault();
 
             return p;
         }
