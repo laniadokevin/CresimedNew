@@ -11,6 +11,7 @@ Cresimed.Admin/bin/
 Cresimed.Admin/obj/
 Cresimed.Campus/bin/
 Cresimed.Campus/obj/
+Cresimed.Campus/appsettings.json
 Cresimed.Core/bin/
 Cresimed.Core/obj/
 Cresimed.Data/bin/
