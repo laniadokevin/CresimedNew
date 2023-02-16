@@ -12,33 +12,35 @@ using Cresimed.Core.Entities.Base;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Xml.Linq;
+using Cresimed.Core.Entities.Enum;
 
 namespace Cresimed.Data.Repositories
 {
-    public class UserRepository : GenericRepository<User>,IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private readonly CresimedDBContext _context;
 
         public UserRepository(CresimedDBContext context) : base(context)
         {
             _context = context;
-        
+
         }
 
         public List<User> GetAll()
         {
             var u = _context.Users.Where(x => x.Deleted == false).Include("UserRoles").Include("UserRoles.Role").ToList();
-         
+
             return u;
         }
+
         public PaginatedList<User> GetAllFiltered(string sortOrder, string currentFilter, string searchString, int? pageNumber, int rolID)
         {
 
-            var user = _context.Users.Where(x=>x.Deleted == false).Include("UserRoles").Include("UserRoles.Role").AsQueryable();
+            var user = _context.Users.Where(x => x.Deleted == false).Include("UserRoles").Include("UserRoles.Role").AsQueryable();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-          
+
                 user = user.Where(s => (s.FullName.ToLower().Replace("à", "a")
                 .Replace("â", "a")
                 .Replace("ä", "a")
@@ -83,7 +85,7 @@ namespace Cresimed.Data.Repositories
 
             if (rolID > 0)
             {
-                user = user.Where(s=>s.UserRoles.Where(x=>x.RoleID == rolID).SingleOrDefault().Enable);
+                user = user.Where(s => s.UserRoles.Where(x => x.RoleID == rolID).SingleOrDefault().Enable);
             }
             switch (sortOrder)
             {
@@ -127,16 +129,18 @@ namespace Cresimed.Data.Repositories
             return PaginatedList<User>.Create(user, pageNumber ?? 1, pageSize);
 
         }
+        
         public User GetById(int id)
         {
-            var p = _context.Users.Include(x=>x.UserRoles.Where(a=>a.Enable == true)).Where(x => x.UserID == id).SingleOrDefault();
-           
+            var p = _context.Users.Include(x => x.UserRoles.Where(a => a.Enable == true)).Where(x => x.UserID == id).SingleOrDefault();
+
 
             return p;
         }
+
         public User processLogin(string username, string password)
         {
-            var user = _context.Users.Where(x=>x.Deleted == false).Include(x=>x.UserRoles).ThenInclude(x=>x.Role).SingleOrDefault(a => a.Username.Equals(username) && a.Enable == true);
+            var user = _context.Users.Where(x => x.Deleted == false).Include(x => x.UserRoles).ThenInclude(x => x.Role).SingleOrDefault(a => a.Username.Equals(username) && a.Enable == true);
             if (user != null)
             {
                 if (BCrypt.Net.BCrypt.Verify(password, user.Password))
@@ -146,16 +150,18 @@ namespace Cresimed.Data.Repositories
             }
             return null;
         }
+
         public User EnableOrDisable(int id)
         {
             var u = _context.Users.Where(x => x.UserID == id).SingleOrDefault();
-            
+
             u.Enable = !u.Enable;
-            
+
             _context.SaveChanges();
-            
+
             return u;
         }
+
         public User InsertUser(User user)
         {
             try
@@ -166,13 +172,14 @@ namespace Cresimed.Data.Repositories
                 _context.Users.Add(user);
                 _context.SaveChanges();
             }
-            catch (Exception ex) 
-            { 
+            catch (Exception ex)
+            {
                 return null;
             }
 
             return user;
         }
+
         public void DeleteUser(int id)
         {
             User user = _context.Users.Where(x => x.UserID == id).SingleOrDefault();
@@ -195,7 +202,7 @@ namespace Cresimed.Data.Repositories
                 p.Email = user.Email;
                 p.DateDeleted = user.DateDeleted;
                 p.Deleted = user.Deleted;
-                
+
                 _context.SaveChanges();
             }
             return p;
@@ -243,7 +250,7 @@ namespace Cresimed.Data.Repositories
         public User UpdateUserAverage(int userID, decimal average)
         {
             var user = _context.Users.Where(x => x.UserID == userID).SingleOrDefault();
-            if(user != null)
+            if (user != null)
             {
                 user.UserAverage = average;
                 _context.SaveChanges();
@@ -263,29 +270,56 @@ namespace Cresimed.Data.Repositories
                 .UserAverage;
 
             var averagesList = _context.Users
-                .Where(x=>x.Enable == true 
+                .Where(x => x.Enable == true
                         && x.UserAverage > 0)
-                .OrderByDescending(x=>x.UserAverage)
+                .OrderByDescending(x => x.UserAverage)
                 .Select(x => x.UserAverage)
                 .ToList();
-            
+
             var totUsers = averagesList.Count();
             var underUser = averagesList.Where(x => x < userAverage).Count();
 
-            percentil = Decimal.Round((decimal)underUser / (decimal)totUsers,4,MidpointRounding.AwayFromZero)*100;
+            percentil = Decimal.Round((decimal)underUser / (decimal)totUsers, 4, MidpointRounding.AwayFromZero) * 100;
 
             rta.Add(percentil);
 
             var averageUser = averagesList.Sum(x => x) / totUsers;
-            
+
             var underAverage = averagesList.Where(x => x < averageUser).Count();
 
-            average = Decimal.Round((decimal)underAverage / (decimal)totUsers,4,MidpointRounding.AwayFromZero)*100;
+            average = Decimal.Round((decimal)underAverage / (decimal)totUsers, 4, MidpointRounding.AwayFromZero) * 100;
 
             rta.Add(average);
 
 
             return rta;
+        }
+
+        public User SubscribeUser(int userID, int status)
+        {
+            var u = _context.Users.Where(x => x.UserID == userID).SingleOrDefault();
+            if (u != null)
+            {
+
+                switch (status)
+                {
+                    case (int)UserStatus.CREATED:
+                        break;
+                    case (int)UserStatus.SUBSCRIBED:
+                        u.Enable = true;
+                        u.Status = status;
+                        break;
+                    case (int)UserStatus.EXPIRED:
+                        break;
+                    case (int)UserStatus.CANCELED:
+                        u.Status = status;
+                        break;
+                }
+
+                _context.SaveChanges();
+            }
+
+            return u;
         }
     }
 }

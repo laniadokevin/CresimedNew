@@ -19,6 +19,7 @@ namespace Cresimed.Core.Interfaces
         int TotalFilteredCount(string searchString, int roleID);
         User processLogin(string username, string password);
         User EnableOrDisable(int id);
+        User SubscribeUser(int userID,int status);
         User InsertUser(User user);
         User UpdateUser(User user);
         void DeleteUser(int id);

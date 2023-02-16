@@ -24,5 +24,6 @@ namespace Cresimed.Core.Entities.ViewModel.Web
         public string Province { get; set; }
         public int LastYear { get; set; }
         public Preference Preference { get; set; }
+        public string PaymentRsp { get; set; }
     }
 }

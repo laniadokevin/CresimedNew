@@ -12,7 +12,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(120);
+    options.IdleTimeout = TimeSpan.FromHours(24);
+    
 });
 
 builder.Services.AddDbContext<CresimedDBContext>(options => {

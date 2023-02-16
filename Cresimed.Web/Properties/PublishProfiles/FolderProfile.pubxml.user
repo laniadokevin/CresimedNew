@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\lania\Desktop\Deploys\CresimedWeb</_PublishTargetUrl>
-    <History>True|2023-02-13T23:28:56.0696924Z;</History>
+    <History>True|2023-02-16T14:03:52.5391928Z;True|2023-02-13T20:28:56.0696924-03:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

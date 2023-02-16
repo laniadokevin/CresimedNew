@@ -1,0 +1,190 @@
+﻿@using Cresimed.Core.Entities.ViewModel.Web
+@{
+    Layout = null;
+}
+@model RegisterViewModel
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+    <title>Cresimed - Registro</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/templateCampus/assets/img/favicon/favicon.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/fontawesome.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/flag-icons.css" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/core.css"  />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/theme-default.css"/>
+    <link rel="stylesheet" href="~/templateCampus/assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/typeahead-js/typeahead.css" />
+    <!-- Vendor -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/bs-stepper/bs-stepper.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/pages/page-auth.css" />
+    <!-- Helpers -->
+    <script src="~/templateCampus/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
+    <script src="~/templateCampus/assets/vendor/js/template-customizer.js"></script>
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="~/templateCampus/assets/js/config.js"></script>
+</head>
+
+<body>
+    <!-- Content -->
+
+    <div class="authentication-wrapper authentication-cover">
+        <div class="authentication-inner row m-0">
+            <!-- Left Text -->
+            <div class="d-none d-lg-flex col-lg-4 align-items-center justify-content-end p-5 pe-0">
+                <div class="w-px-400">
+                    <img src="../templateCampus/assets/img/illustrations/create-account-light.png"
+                         class="img-fluid scaleX-n1-rtl"
+                         alt="multi-steps"
+                         width="600" />
+                </div>
+            </div>
+            <!-- /Left Text -->
+            <!--  Multi Steps Registration -->
+            <div class="d-flex col-lg-8 authentication-bg p-sm-5 p-3">
+                <div class="d-flex flex-column w-px-700 mx-auto">
+                    <!-- Logo -->
+                    <div class="app-brand border-bottom mx-3 mb-4">
+                            <span class="app-brand-logo demo">
+                                <img src="~/templateCampus/assets/img/favicon/Logo.png" />
+                            </span>
+                            <span class="app-brand-text demo h3 mb-0 fw-bold">Cresimed</span>
+                    </div>
+                    <!-- /Logo -->
+
+                    <div class="my-auto">
+                        <div id="" class="shadow-none">
+                            <div class="">
+                                <!-- Account Details -->
+                                <div id="" class="content">
+                                    <div class="content-header mb-1 ">
+                                        <h4>Pago de Suscripcion </h4>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-sm-6">
+                                            @if (Model.PaymentRsp == "Su pago ha sido aceptado con exito ya puede comenzar a practicar")
+                                            {
+                                                <span style="color:green">
+                                                    @Model.PaymentRsp
+
+                                                    <a href="https://campus.cresimed.com/"> Iniciar Sesion </a>
+                                                </span>
+                                            }
+                                            @if (Model.PaymentRsp == "Su Pago ha sido rechazado" 
+                                                || Model.PaymentRsp == "Error en el pago puede intentar pagar nuevamente con el siguiente boton o comuniquese con nosotros y lo ayudaremos a resolverlo"
+                                                || Model.PaymentRsp == "Error en el pago puede intentar pagar nuevamente con el siguiente boton ")
+                                            {
+                                                <span style="color:red">
+                                                    @Model.PaymentRsp
+                                                
+                                                </span>
+                                                <br />
+                                                <span>
+                                                    Puedes reintentar el pago en el siguiente boton de pago
+                                                </span>
+                                                <br />
+                                                <br />
+                                                <div class="cho-container"></div>
+                                                
+                                            }
+                                        </div>
+                                        <div class="col-sm-6">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                            <div class="bs-stepper-content pt-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / Multi Steps Registration -->
+        </div>
+    </div>
+
+    <script>
+        // Check selected custom option
+        window.Helpers.initCustomOptionCheck();
+    </script>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <!-- / Content -->
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="~/templateCampus/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/popper/popper.js"></script>
+    <script src="~/templateCampus/assets/vendor/js/bootstrap.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/libs/hammer/hammer.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/libs/i18n/i18n.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/typeahead-js/typeahead.js"></script>
+
+    <script src="~/templateCampus/assets/vendor/js/menu.js"></script>
+    <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="~/templateCampus/assets/vendor/libs/cleavejs/cleave.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/cleavejs/cleave-phone.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/bs-stepper/bs-stepper.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/select2/select2.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+    <script src="~/templateCampus/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>
+
+    <!-- Main JS -->
+    <script src="~/templateCampus/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="~/templateCampus/assets/js/pages-auth-multisteps.js"></script>
+    <script>
+        var mpID = '@Html.Raw(Model.PaymentRsp == "Su Pago ha sido rechazado" ? Model.Preference.Id : "")'
+                const mp = new MercadoPago('APP_USR-7cd3e61d-f112-43b7-9ce9-20fe8406f60b', {
+                    locale: 'es-AR'
+                });
+            
+
+                mp.checkout({
+                    preference: {
+                    id: mpID,
+                },
+                    render: {
+                        container: '.cho-container',
+                        label: 'Pagar',
+                    }
+                });
+            
+        
+    </script>
+</body>

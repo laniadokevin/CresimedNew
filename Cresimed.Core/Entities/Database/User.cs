@@ -14,7 +14,6 @@ namespace Cresimed.Core.Entities.Database
         {
             UserRoles = new HashSet<UserRole>();
         }
-
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -29,6 +28,7 @@ namespace Cresimed.Core.Entities.Database
         public string University { get; set; }
         public string Province { get; set; }
         public int LastYear { get; set; }
+        public int Status { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
 

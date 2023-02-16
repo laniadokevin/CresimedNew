@@ -35,6 +35,7 @@ namespace Cresimed.Data
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Percentil> Percentils { get; set; }
         public virtual DbSet<QuestionStat> QuestionStats { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -215,6 +216,15 @@ namespace Cresimed.Data
             {
                 entity.HasKey(e => e.QuestionStatID);
                 entity.ToTable("QuestionStat");
+
+
+            });
+
+            modelBuilder.Entity<Subscription>(entity =>
+
+            {
+                entity.HasKey(e => e.SubscriptionID);
+                entity.ToTable("Subscription");
 
 
             });

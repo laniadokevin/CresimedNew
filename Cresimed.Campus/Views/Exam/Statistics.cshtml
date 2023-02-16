@@ -2,13 +2,14 @@
 @using Cresimed.Core.Entities.ViewModel.Campus
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
     var userId = User.FindFirst(ClaimTypes.Name).Value;
     var porcCorr = Model.ExamStats.TotalCorrect * 100 / (Model.ExamStats.TotalCount != 0 ? Model.ExamStats.TotalCount : 1);
     var porcIncorr = Model.ExamStats.TotalIncorrect * 100 / (Model.ExamStats.TotalCount != 0 ? Model.ExamStats.TotalCount : 1);
     var listaSpecialties = Model.Percentils.Select(x => x.Specialty.Name).ToList();
     var listaPercentilsValue = Model.Percentils.Select(x => x.Value).ToList();
 
-    TimeSpan t = TimeSpan.FromSeconds(Model.TimeAverageQuestion);
+    TimeSpan t = TimeSpan.FromSeconds(((Model.TimeAverageQuestion)!=null?(Model.TimeAverageQuestion):1));
 
     string average = string.Format("{0:D2}h {1:D2}m {2:D2}s",
     t.Hours,
@@ -16,7 +17,7 @@
     t.Seconds,
     t.Milliseconds);
 
-    TimeSpan tt = TimeSpan.FromSeconds(Model.TotalTimeSpent);
+    TimeSpan tt = TimeSpan.FromSeconds(((Model.TotalTimeSpent)!=null?(Model.TotalTimeSpent):1));
 
     string totalTimee = string.Format("{0:D2}h {1:D2}m {2:D2}s",
     tt.Hours,
@@ -96,7 +97,7 @@
                         @if (Model.PercentilChart.First() > 0)
                         {
                             <div class="card-body" style="margin-bottom:0px">
-                                <canvas id="barChart" class="chartjs" data-height="00"></canvas>
+                                <canvas id="barChart" class="chartjs" height="400"></canvas>
                             </div>
                         }
                         else
@@ -282,8 +283,6 @@
                         </table>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -299,17 +298,15 @@
     <script src="../../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
 
-    <script src="../../assets/js/charts-apex.js"></script>
-
     <script>
-        'use strict';
 
-        (function () {
-            // Color Variables
-            const purpleColor = '#836AF9',
+            'use strict';
+
+            (function () {
+                 const purpleColor = '#836AF9',
                 yellowColor = '#ffe800',
                 redColor = '#FF5B5C',
-                greenColor = '#39DA8A',
+                greenColor = '#39DA8A', 
                 cyanColor = '#28dac6',
                 orangeColor = '#FF8132',
                 orangeLightColor = '#FDAC34',
@@ -319,29 +316,50 @@
                 blueColor = '#2B9AFF',
                 blueLightColor = '#84D0FF';
 
-            let cardColor, headingColor, labelColor, borderColor, legendColor;
+                let cardColor, headingColor, labelColor, borderColor, legendColor, radialTrackColor;
 
-            if (isDarkStyle) {
-                cardColor = config.colors_dark.cardColor;
-                headingColor = config.colors_dark.headingColor;
-                labelColor = config.colors_dark.textMuted;
-                legendColor = config.colors_dark.bodyColor;
-                borderColor = config.colors_dark.borderColor;
-            } else {
-                cardColor = config.colors.cardColor;
-                headingColor = config.colors.headingColor;
-                labelColor = config.colors.textMuted;
-                legendColor = config.colors.bodyColor;
-                borderColor = config.colors.borderColor;
-            }
+                if (isDarkStyle) {
+                    cardColor = config.colors_dark.cardColor;
+                    headingColor = config.colors_dark.headingColor;
+                    labelColor = config.colors_dark.textMuted;
+                    legendColor = config.colors_dark.bodyColor;
+                    borderColor = config.colors_dark.borderColor;
+                    radialTrackColor = '#36435C';
+                } else {
+                    cardColor = config.colors.cardColor;
+                    headingColor = config.colors.headingColor;
+                    labelColor = config.colors.textMuted;
+                    legendColor = config.colors.bodyColor;
+                    borderColor = config.colors.borderColor;
+                    radialTrackColor = config.colors_label.secondary;
+                }
 
             // Set height according to their data-height
             // --------------------------------------------------------------------
             const chartList = document.querySelectorAll('.chartjs');
             chartList.forEach(function (chartListItem) {
-                chartListItem.height = 200;
+                chartListItem.height = 350;
             });
-            // Doughnut Chart
+                // Color constant
+                const chartColors = {
+                    column: {
+                        series1: '#826af9',
+                        series2: '#d2b0ff',
+                        bg: '#f8d3ff'
+                    },
+                    donut: {
+                        series1: '#fee802',
+                        series2: '#3fd0bd',
+                        series3: '#826bf8',
+                        series4: '#2b9bf4'
+                    },
+                    area: {
+                        series1: '#29dac7',
+                        series2: '#60f2ca',
+                        series3: '#a5f8cd'
+                    }
+                };
+                // Doughnut Chart
             // --------------------------------------------------------------------
 
             const doughnutChart = document.getElementById('doughnutChart');
@@ -409,55 +427,78 @@
             ;
         }]';
 
-
-
-
-        })();
-    </script>
-
-    <script>
-
-            'use strict';
-
-            (function () {
-                let cardColor, headingColor, labelColor, borderColor, legendColor, radialTrackColor;
-
-                if (isDarkStyle) {
-                    cardColor = config.colors_dark.cardColor;
-                    headingColor = config.colors_dark.headingColor;
-                    labelColor = config.colors_dark.textMuted;
-                    legendColor = config.colors_dark.bodyColor;
-                    borderColor = config.colors_dark.borderColor;
-                    radialTrackColor = '#36435C';
-                } else {
-                    cardColor = config.colors.cardColor;
-                    headingColor = config.colors.headingColor;
-                    labelColor = config.colors.textMuted;
-                    legendColor = config.colors.bodyColor;
-                    borderColor = config.colors.borderColor;
-                    radialTrackColor = config.colors_label.secondary;
-                }
-
-                // Color constant
-                const chartColors = {
-                    column: {
-                        series1: '#826af9',
-                        series2: '#d2b0ff',
-                        bg: '#f8d3ff'
+                // Bar Chart
+                // --------------------------------------------------------------------
+          
+                const barChart = document.getElementById('barChart');
+                if (barChart) {
+                const barChartVar = new Chart(barChart, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            'Yo',
+                            'Promedio'
+                        ],
+                        datasets: [
+                            {
+                                data: [@Model.PercentilChart.ToArray()[0].ToString().Replace(",","."), @Model.PercentilChart.ToArray()[1].ToString().Replace(",",".")],
+                                backgroundColor: cyanColor,
+                                borderColor: 'transparent',
+                                maxBarThickness: 45,
+                                borderRadius: {
+                                    topRight: 0,
+                                    topLeft: 0
+                                }
+                            }
+                        ]
                     },
-                    donut: {
-                        series1: '#fee802',
-                        series2: '#3fd0bd',
-                        series3: '#826bf8',
-                        series4: '#2b9bf4'
-                    },
-                    area: {
-                        series1: '#29dac7',
-                        series2: '#60f2ca',
-                        series3: '#a5f8cd'
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 2000
+                        },
+                        plugins: {
+                            tooltip: {
+                                rtl: isRtl,
+                                backgroundColor: cardColor,
+                                titleColor: headingColor,
+                                bodyColor: legendColor,
+                                borderWidth: 1,
+                                borderColor: borderColor
+                            },
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    color: labelColor
+                                }
+                            },
+                            y: {
+                                min: 0,
+                                max: 100,
+                                grid: {
+                                    color: borderColor,
+                                    drawBorder: false,
+                                    borderColor: borderColor
+                                },
+                                ticks: {
+                                    stepSize: 100,
+                                    color: labelColor
+                                }
+                            }
+                        }
                     }
-                };
-
+                });
+            }
 
                 // Radar Chart
                 // --------------------------------------------------------------------
@@ -563,121 +604,9 @@
                     radarChart.render();
                 }
 
+
+
             })();
         </script>
-    <script>
-        /**
-        * Charts ChartsJS
-        */
-        'use strict';
 
-        (function () {
-            // Color Variables
-            const purpleColor = '#836AF9',
-                yellowColor = '#ffe800',
-                cyanColor = '#28dac6',
-                orangeColor = '#FF8132',
-                orangeLightColor = '#FDAC34',
-                oceanBlueColor = '#299AFF',
-                greyColor = '#4F5D70',
-                greyLightColor = '#EDF1F4',
-                blueColor = '#2B9AFF',
-                blueLightColor = '#84D0FF';
-
-            let cardColor, headingColor, labelColor, borderColor, legendColor;
-
-            if (isDarkStyle) {
-                cardColor = config.colors_dark.cardColor;
-                headingColor = config.colors_dark.headingColor;
-                labelColor = config.colors_dark.textMuted;
-                legendColor = config.colors_dark.bodyColor;
-                borderColor = config.colors_dark.borderColor;
-            } else {
-                cardColor = config.colors.cardColor;
-                headingColor = config.colors.headingColor;
-                labelColor = config.colors.textMuted;
-                legendColor = config.colors.bodyColor;
-                borderColor = config.colors.borderColor;
-            }
-
-            // Set height according to their data-height
-            // --------------------------------------------------------------------
-            const chartList = document.querySelectorAll('.chartjs');
-            chartList.forEach(function (chartListItem) {
-                chartListItem.height =350;
-            });
-
-            // Bar Chart
-            // --------------------------------------------------------------------
-            const barChart = document.getElementById('barChart');
-            if (barChart) {
-                const barChartVar = new Chart(barChart, {
-                    type: 'bar',
-                    data: {
-                        labels: [
-                            'Yo',
-                            'Promedio'
-                        ],
-                        datasets: [
-                            {
-                                data: [@Model.PercentilChart.ToArray()[0], @Model.PercentilChart.ToArray()[1]],
-                                backgroundColor: cyanColor,
-                                borderColor: 'transparent',
-                                maxBarThickness: 45,
-                                borderRadius: {
-                                    topRight: 0,
-                                    topLeft: 0
-                                }
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: {
-                            duration: 500
-                        },
-                        plugins: {
-                            tooltip: {
-                                rtl: isRtl,
-                                backgroundColor: cardColor,
-                                titleColor: headingColor,
-                                bodyColor: legendColor,
-                                borderWidth: 1,
-                                borderColor: borderColor
-                            },
-                            legend: {
-                                display: false
-                            }
-                        },
-                        scales: {
-                            x: {
-                                grid: {
-                                    color: borderColor,
-                                    drawBorder: false,
-                                    borderColor: borderColor
-                                },
-                                ticks: {
-                                    color: labelColor
-                                }
-                            },
-                            y: {
-                                min: 0,
-                                max: 100,
-                                grid: {
-                                    color: borderColor,
-                                    drawBorder: false,
-                                    borderColor: borderColor
-                                },
-                                ticks: {
-                                    stepSize: 100,
-                                    color: labelColor
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-        })();</script>
 }
