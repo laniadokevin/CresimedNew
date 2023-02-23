@@ -1,6 +1,7 @@
 ﻿@using System.Security.Claims;
 @{
     var userId = User.FindFirst(ClaimTypes.Name).Value;
+    ViewData["Title"] = "Dashboard - Cresimed";
 }
 <!DOCTYPE html>
 
@@ -19,7 +20,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Dashboard | Cresimed</title>
+    <title>@ViewData["Title"].ToString()</title>
 
     <meta name="description" content="" />
 

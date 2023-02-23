@@ -31,7 +31,7 @@
         </div>
 
         <div class="row ">
-            <div class="col-lg-6 col-12">
+            <div class="col-lg-6 col-12" style="margin-bottom:20px">
                 <div class="card">
                     <h5 class="card-header">Rendimiento</h5>
                     <div class="card-body">
@@ -92,10 +92,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-12">
+            
+            <div class="col-lg-6 col-12" style="margin-bottom:20px">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Percentilo</h5>
+                        <h5 class="card-title mb-0">Desempeño con pares</h5>
                     </div>
                     <div class="card-body">
                         @if (Model.PercentilChart.First() > 0)
@@ -129,7 +130,6 @@
             </div>
             <!-- /Radar Chart -->
         </div>
-        <br />
         <div class="row ">
             <div class="col-md">
                 <div class="card mb-4">
@@ -306,7 +306,7 @@
                         responsive: true,
                         maintainAspectRatio: false,
                         animation: {
-                            duration: 500
+                            duration: 2000
                         },
                         plugins: {
                             tooltip: {
@@ -371,7 +371,7 @@
                     options: {
                         responsive: true,
                         animation: {
-                            duration: 500
+                            duration: 2000
                         },
                         cutout: '0%',
                         plugins: {

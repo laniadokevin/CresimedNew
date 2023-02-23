@@ -27,8 +27,8 @@
     <link rel="stylesheet" href="~/templateCampus/assets/vendor/fonts/flag-icons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/core.css"  />
-    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/theme-default.css"/>
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/core.css" />
+    <link rel="stylesheet" href="~/templateCampus/assets/vendor/css/rtl/theme-default.css" />
     <link rel="stylesheet" href="~/templateCampus/assets/css/demo.css" />
 
     <!-- Vendors CSS -->
@@ -51,6 +51,36 @@
     <script src="~/templateCampus/assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/templateCampus/assets/js/config.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9K81LNGYH7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9K81LNGYH7');
+    </script>
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '756020085890158');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=756020085890158&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -73,10 +103,10 @@
                 <div class="d-flex flex-column w-px-700 mx-auto">
                     <!-- Logo -->
                     <div class="app-brand border-bottom mx-3 mb-4">
-                            <span class="app-brand-logo demo">
-                                <img src="~/templateCampus/assets/img/favicon/Logo.png" />
-                            </span>
-                            <span class="app-brand-text demo h3 mb-0 fw-bold">Cresimed</span>
+                        <span class="app-brand-logo demo">
+                            <img src="~/templateCampus/assets/img/favicon/Logo.png" />
+                        </span>
+                        <span class="app-brand-text demo h3 mb-0 fw-bold">Cresimed</span>
                     </div>
                     <!-- /Logo -->
 
@@ -132,35 +162,39 @@
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsUsername">Usuario</label>
                                                 @Html.TextBoxFor(m=>m.Username,new {@type="text", @name="multiStepsUsername",@id="multiStepsUsername",@class="form-control",@placeholder="johndoe"})
+                                                <span id="multiStepsUsernameMsg"> </span>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsEmail">Email</label>
-                                                @Html.TextBoxFor(m=>m.Email,new {@type="email", @name="multiStepsEmail", @id="multiStepsEmail", @class="form-control", @placeholder="john.doe@email.com" })
+                                                @Html.TextBoxFor(m=>m.Email,new {@type="text", @name="multiStepsEmail", @id="multiStepsEmail", @class="form-control", @placeholder="john.doe@email.com" })
+                                                <span id="multiStepsEmailMsg"> </span>
                                             </div>
                                             <div class="col-sm-6 form-password-toggle">
                                                 <label class="form-label" for="multiStepsPass">Contraseña</label>
                                                 <div class="input-group input-group-merge">
-                                                    @Html.TextBoxFor(m=>m.Password,new {@type="password" ,@id="multiStepsPass", @name="multiStepsPass", @class="form-control", @placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" }) 
-                                                           
+                                                    @Html.TextBoxFor(m=>m.Password,new {@type="password" ,@id="multiStepsPass", @name="multiStepsPass", @class="form-control", @placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" })
+
                                                     <span class="input-group-text cursor-pointer" id="multiStepsPass2">
                                                         <i class="bx bx-hide"></i>
                                                     </span>
                                                 </div>
+                                                <span id="multiStepsPassMsg"> </span>
                                             </div>
                                             <div class="col-sm-6 form-password-toggle">
                                                 <label class="form-label" for="multiStepsConfirmPass">Confirmar Contraseña</label>
                                                 <div class="input-group input-group-merge">
-                                                    
+
                                                     <input type="password"
-                                                           id="multiStepsConfirmPass"
-                                                           name="multiStepsConfirmPass"
-                                                           class="form-control"
-                                                           placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                           aria-describedby="multiStepsConfirmPass2" />
+                                                       id="multiStepsConfirmPass"
+                                                       name="multiStepsConfirmPass"
+                                                       class="form-control"
+                                                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                                       aria-describedby="multiStepsConfirmPass2" />
                                                     <span class="input-group-text cursor-pointer" id="multiStepsConfirmPass2">
                                                         <i class="bx bx-hide"></i>
                                                     </span>
                                                 </div>
+                                                <span id="multiStepsConfirmPassMsg"> </span>
                                             </div>
                                             <div class="col-12 d-flex justify-content-between mt-4">
                                                 <button class="btn btn-label-secondary btn-prev" disabled>
@@ -184,21 +218,25 @@
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsFirstName"> Nombre</label>
                                                 @Html.TextBoxFor(m=>m.Name,new {@type="text", @name="multiStepsFirstName",@id="multiStepsFirstName",@class="form-control",@placeholder="John"})
-                                              
+                                                <span id="multiStepsFirstNameMsg"> </span>
+
                                             </div>
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsLastName">Apellido</label>
                                                 @Html.TextBoxFor(m=>m.LastName,new {@type="text", @name="multiStepsLastName",@id="multiStepsLastName",@class="form-control",@placeholder="Doe"})
+                                                <span id="multiStepsLastNameMsg"> </span>
 
                                             </div>
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsCountry">Pa&iacute;s</label>
                                                 @Html.TextBoxFor(m=>m.Country,new {@type="text", @name="multiStepsCountry",@id="multiStepsCountry",@class="form-control",@placeholder="Argentina"})
+                                                <span id="multiStepsCountryMsg"> </span>
 
                                             </div>
                                             <div class="col-sm-6">
                                                 <label class="form-label" for="multiStepsProvince">Provincia</label>
                                                 @Html.TextBoxFor(m=>m.Province,new {@type="text", @name="multiStepsProvince",@id="multiStepsProvince",@class="form-control",@placeholder="CABA"})
+                                                <span id="multiStepsProvinceMsg"> </span>
 
                                             </div>
                                             <div class="col-12 d-flex justify-content-between mt-4">
@@ -232,17 +270,16 @@
                                             </div>
 
                                         </div>
-                                            <div class="col-12 d-flex justify-content-between mt-4">
-                                                <button class="btn btn-primary btn-prev">
-                                                    <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                                    <span class="d-sm-inline-block d-none">Anterior</span>
-                                                </button>
-                                                <button type="submit" class="btn btn-success btn-next btn-submit">Registrarme</button>
-                                            </div>
+                                        <div class="col-12 d-flex justify-content-between mt-4">
+                                            <button class="btn btn-primary btn-prev">
+                                                <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
+                                                <span class="d-sm-inline-block d-none">Anterior</span>
+                                            </button>
+                                            <button type="submit" class="btn btn-success btn-next btn-submit">Registrarme</button>
                                         </div>
-                                        <!--/ Credit Card Details -->
-                                
-}   
+                                    </div>
+                                    <!--/ Credit Card Details -->
+                                }
                             </div>
                         </div>
                     </div>
@@ -286,5 +323,5 @@
 
     <!-- Page JS -->
     <script src="~/templateCampus/assets/js/pages-auth-multisteps.js"></script>
-    
+
 </body>

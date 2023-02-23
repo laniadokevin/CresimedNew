@@ -34,7 +34,7 @@ namespace Cresimed.Admin.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            var account = _userRepository.processLogin(username, password);
+            var account = _userRepository.ProcessLogin(username, password);
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || account == null)
             {
                 ViewBag.error = "Invalid";

@@ -25,7 +25,7 @@ namespace Cresimed.Web.Controllers
         private readonly ILogRepository _logRepository;
         private readonly ISubscriptionRepository _subscriptionRepository;
         private bool Kevin = false;
-        private string accessToken = "APP_USR-6633196756476060-020908-bf2a224f99421a5877384a052ea96d3a-202416641";
+        private string accessToken = "APP_USR-7796369158563021-021615-aeef5bbd00a850b927b8a9f96f7413fe-1305687415";
         private decimal precio = 1.00m;
 
         public AccountController(IUserRepository userRepository, ILogRepository logRepository, IUserRoleRepository userRoleRepository, ISubscriptionRepository subscriptionRepository)

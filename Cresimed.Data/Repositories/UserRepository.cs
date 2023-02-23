@@ -138,17 +138,47 @@ namespace Cresimed.Data.Repositories
             return p;
         }
 
-        public User processLogin(string username, string password)
+        public User ProcessLoginAdmin(string username, string password)
         {
-            var user = _context.Users.Where(x => x.Deleted == false).Include(x => x.UserRoles).ThenInclude(x => x.Role).SingleOrDefault(a => a.Username.Equals(username) && a.Enable == true);
+            var user = _context.Users
+                .Where(x => x.Deleted == false 
+                         && x.Enable == true)
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .SingleOrDefault(a => a.Username.Equals(username));
+
             if (user != null)
             {
+                
+                
+
+                user.UserRoles.Where(x => x.RoleID == (int) UserRoles.SUPERADMIN || x.RoleID == (int)UserRoles.ADMIN || x.RoleID == (int)UserRoles.EMPLOYEE).ToList();
+
+                switch (user.Status)
+                {
+                    case (int)LoginAnswers.SUCCESS:
+                        break;
+                }
+
+                
+                //&& a.Status == (int)UserStatus.SUBSCRIBED
+                
                 if (BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
                     return user;
                 }
             }
+            else
+            {
+
+            }
+
             return null;
+        }
+
+        public User ProcessLoginCampus(string username, string password)
+        {
+            throw new NotImplementedException();
         }
 
         public User EnableOrDisable(int id)
@@ -321,6 +351,7 @@ namespace Cresimed.Data.Repositories
 
             return u;
         }
+
     }
 }
 

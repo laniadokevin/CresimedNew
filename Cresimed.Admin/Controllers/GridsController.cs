@@ -4,6 +4,7 @@ using Cresimed.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace Cresimed.Admin.Controllers
 {
@@ -69,8 +70,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Careers
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Careers")]
         public IActionResult Careers(CareerGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -107,8 +107,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Categories
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Categories")]
         public IActionResult Categories(CategoryGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -142,8 +141,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Countries
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Countries")]
         public IActionResult Countries(CountryGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -178,8 +176,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Contacts
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Contacts")]
         public IActionResult Contacts(ContactGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -211,8 +208,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Faqs
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Faqs")]
         public IActionResult Faqs(FaqGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -246,8 +242,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Reports
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Reports")]
         public IActionResult Reports(ReportGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -279,8 +274,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Specialties
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Specialties")]
         public IActionResult Specialties(SpecialtyGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString)
         {
@@ -316,9 +310,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Question
 
-        [Authorize(Roles = "Employee")]
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Employee, SuperAdmin, Admin")]
         [Route("Questions")]
         public IActionResult Question(QuestionGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString, string SpecialtyFilter, string CategoryFilter)
         {
@@ -379,8 +371,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Users
 
-        [Authorize(Roles = "SuperAdmin")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [Route("Users")]
         public IActionResult Users(UserGridViewModel view, int? pageNumber, string sortOrder, string currentFilter, string searchString, string RoleFilter)
         {

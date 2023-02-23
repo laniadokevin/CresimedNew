@@ -158,7 +158,6 @@ namespace Cresimed.Campus.Controllers
 
             view.ExamStats = _examRepository.GetAllBySpecialty(userID);
             view.PercentilChart = _userRepository.GetPercentil(userID);
-            view.PercentilChart = _userRepository.GetPercentil(userID);
             view.Percentils = _percentilRepository.GetListPercentilsForUser(userID);
 
             view.CantExams = _examRepository.GetCantExams(userID);

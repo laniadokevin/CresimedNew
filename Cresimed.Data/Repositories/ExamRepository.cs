@@ -327,8 +327,10 @@ namespace Cresimed.Data.Repositories
 
             int totPreg = exams.Count();
 
-
-            return (double)totTime / (double)totPreg;
+            if (totPreg != 0)
+                return (double)totTime / (double)totPreg;
+            else
+                return 1;
         }
 
         public int GetTotalTimeSpent(int userID)

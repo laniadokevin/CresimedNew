@@ -31,7 +31,7 @@ namespace Cresimed.Campus.Controllers
             _percentilRepository = percentilRepository ?? throw new ArgumentNullException(nameof(percentilRepository));
         }
 
-        [Route("")]
+        [Route("")] 
         [Route("~/")]
         [Route("~/Account/index")]
         public IActionResult Index()
@@ -42,7 +42,7 @@ namespace Cresimed.Campus.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            var account = _userRepository.processLogin(username, password);
+            var account = _userRepository.ProcessLogin(username, password);
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || account == null)
             {
                 ViewBag.error = "Invalid";
@@ -87,12 +87,17 @@ namespace Cresimed.Campus.Controllers
         {
             var pre = _userRepository.GetById(int.Parse(User.Claims.Where(x => x.Type == ClaimTypes.NameIdentifier).Select(c => c.Value).SingleOrDefault()));
 
-
-            pre.Password = BCrypt.Net.BCrypt.HashPassword(password);
+            if (pre != null)
+            {
+                pre.Password = BCrypt.Net.BCrypt.HashPassword(password);
             
-            var user = _userRepository.UpdateUser(pre);
+                var user = _userRepository.UpdateUser(pre);
 
-            return View("Welcome");
+                return RedirectToAction("Welcome");
+            }
+            else
+                return View("AccessDenied");
+
         }
 
         [HttpGet]

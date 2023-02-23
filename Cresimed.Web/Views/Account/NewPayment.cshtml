@@ -51,6 +51,37 @@
     <script src="~/templateCampus/assets/vendor/js/template-customizer.js"></script>
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="~/templateCampus/assets/js/config.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9K81LNGYH7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-9K81LNGYH7');
+    </script>
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '756020085890158');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=756020085890158&ev=PageView&noscript=1" />
+    </noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -146,7 +177,7 @@
     <!-- Page JS -->
     <script src="~/templateCampus/assets/js/pages-auth-multisteps.js"></script>
     <script>
-        const mp = new MercadoPago('APP_USR-7cd3e61d-f112-43b7-9ce9-20fe8406f60b', {
+        const mp = new MercadoPago('APP_USR-61ceb714-a1a4-4f7a-9ec7-f8a91d2fdcc7', {
             locale: 'es-AR'
         });
 

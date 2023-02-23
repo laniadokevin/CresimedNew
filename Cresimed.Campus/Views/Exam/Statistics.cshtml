@@ -9,7 +9,7 @@
     var listaSpecialties = Model.Percentils.Select(x => x.Specialty.Name).ToList();
     var listaPercentilsValue = Model.Percentils.Select(x => x.Value).ToList();
 
-    TimeSpan t = TimeSpan.FromSeconds(((Model.TimeAverageQuestion)!=null?(Model.TimeAverageQuestion):1));
+    TimeSpan t = TimeSpan.FromSeconds(Model.TimeAverageQuestion);
 
     string average = string.Format("{0:D2}h {1:D2}m {2:D2}s",
     t.Hours,
@@ -17,7 +17,7 @@
     t.Seconds,
     t.Milliseconds);
 
-    TimeSpan tt = TimeSpan.FromSeconds(((Model.TotalTimeSpent)!=null?(Model.TotalTimeSpent):1));
+    TimeSpan tt = TimeSpan.FromSeconds(Model.TotalTimeSpent);
 
     string totalTimee = string.Format("{0:D2}h {1:D2}m {2:D2}s",
     tt.Hours,
@@ -31,7 +31,7 @@
     <div class="contaisner ">
         
 
-        <div class="row ">
+        <div class="row " style="margin-bottom:20px">
             <div class="col-lg-6 col-12">
                 <div class="card">
                     <h5 class="card-header">Rendimiento</h5>
@@ -91,7 +91,7 @@
             <div class="col-lg-6 col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Percentilo</h5>
+                        <h5 class="card-title mb-0">Desempeño con pares</h5>
                     </div>
                     <div class="card-body">
                         @if (Model.PercentilChart.First() > 0)
@@ -120,7 +120,7 @@
         <div class="row ">
             <div class="col-md">
                 <div class="card">
-                    <h5 class="card-header">Especialidades</h5>
+                    <h5 class="card-header">Información de exámenes</h5>
                     <div class="card-body">
                         @if (Model.CantExams > 0)
                         {
@@ -182,6 +182,7 @@
 
                 </div>
                 <br />
+                @*
 
                 <div class="card">
                     <h5 class="card-header">Especialidades</h5>
@@ -207,6 +208,7 @@
                     </div>
                 </div>
                 <br />
+                *@
 
                 <div class="card mb-4">
                     <h5 class="card-header">Especialidades</h5>
@@ -500,6 +502,7 @@
                 });
             }
 
+                @*
                 // Radar Chart
                 // --------------------------------------------------------------------
                 const radarChartEl = document.querySelector('#radarChart'),
@@ -603,6 +606,7 @@
                     const radarChart = new ApexCharts(radarChartEl, radarChartConfig);
                     radarChart.render();
                 }
+                *@
 
 
 
