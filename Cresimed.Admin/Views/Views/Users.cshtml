@@ -1,6 +1,7 @@
 ﻿
 @using System.Security.Claims;
 @using Cresimed.Core.Entities.Database
+@using Cresimed.Core.Entities.Enum
 @using Cresimed.Core.Entities.ViewModel.Admin.Edition
 @model UserViewViewModel
 
@@ -41,6 +42,40 @@
                             @Html.TextBoxFor(m => m.User.Email, new { @maxlength = "128", @class="form-control", @placeholder="Email" })
                     
                         </div>
+                        <div class="form-group">
+                            <label>DateAdded: @Html.DisplayFor(m => m.User.DateAdded, new {})</label>
+                        </div>
+                        
+                    <div class="form-group">
+                        <label>Country</label>
+                        @Html.TextBoxFor(m => m.User.Country, new { @maxlength = "128", @class="form-control", @placeholder="Email" })
+
+                    </div>
+                    <div class="form-group">
+                        <label>Province</label>
+                        @Html.TextBoxFor(m => m.User.Province, new { @maxlength = "128", @class="form-control", @placeholder="Email" })
+
+                    </div>
+                    <div class="form-group">
+                        <label>University</label>
+                        @Html.TextBoxFor(m => m.User.University, new { @maxlength = "128", @class="form-control", @placeholder="Email" })
+
+                    </div>
+                    <div class="form-group">
+                        <label>LastYear</label>
+                        @Html.TextBoxFor(m => m.User.LastYear, new { @maxlength = "128", @class="form-control", @placeholder="Email" })
+
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            @{
+                                string stat = Enum.GetName(typeof(UserStatus), Model.User.Status);
+                            }
+                            Status: @stat
+
+                        </label>
+
+                    </div>
                         <div class="form-group">
 
                         <label>Enabled</label>

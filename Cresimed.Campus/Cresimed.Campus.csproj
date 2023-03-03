@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="3.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Cresimed.Core\Cresimed.Core.csproj" />
     <ProjectReference Include="..\Cresimed.Data\Cresimed.Data.csproj" />
   </ItemGroup>

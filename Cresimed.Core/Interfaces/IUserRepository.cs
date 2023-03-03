@@ -17,8 +17,7 @@ namespace Cresimed.Core.Interfaces
         PaginatedList<User> GetAllFiltered(string sortOrder, string currentFilter, string searchString, int? pageNumber, int rolID);
         int TotalUsersCount();
         int TotalFilteredCount(string searchString, int roleID);
-        User ProcessLoginAdmin(string username, string password);
-        User ProcessLoginCampus(string username, string password);
+        User processLogin(string username, string password);
         User EnableOrDisable(int id);
         User SubscribeUser(int userID,int status);
         User InsertUser(User user);

@@ -77,8 +77,8 @@
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Forgot Password? 🔒</h4>
-                        <p class="mb-4">Enter your email and we'll send you instructions to reset your password</p>
+                        <h4 class="mb-2">¿Olvidaste tu contraseña? 🔒</h4>
+                        <p class="mb-4">Ingresá tu email y te enviaremos las instrucciones para resetear tu contraseña.</p>
                         <form id="formAuthentication" class="mb-3" action="auth-reset-password-basic.html" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -86,15 +86,15 @@
                                        class="form-control"
                                        id="email"
                                        name="email"
-                                       placeholder="Enter your email"
+                                       placeholder="Ingresa tu email"
                                        autofocus />
                             </div>
-                            <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
+                            <button class="btn btn-primary d-grid w-100">Enviar link de reseteo</button>
                         </form>
                         <div class="text-center">
-                            <a href="auth-login-basic.html" class="d-flex align-items-center justify-content-center">
+                            <a href="@Url.Action("Login","Account")" class="d-flex align-items-center justify-content-center">
                                 <i class="bx bx-chevron-left scaleX-n1-rtl"></i>
-                                Back to login
+                                Volver al Inicio de sesión
                             </a>
                         </div>
                     </div>

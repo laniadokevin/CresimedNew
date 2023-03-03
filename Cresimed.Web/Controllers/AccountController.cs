@@ -23,17 +23,20 @@ namespace Cresimed.Web.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly ILogRepository _logRepository;
+        private readonly IDiscountRepository _discountRepository;
         private readonly ISubscriptionRepository _subscriptionRepository;
         private bool Kevin = false;
         private string accessToken = "APP_USR-7796369158563021-021615-aeef5bbd00a850b927b8a9f96f7413fe-1305687415";
-        private decimal precio = 1.00m;
+        private decimal precio = 75000.00m;
 
-        public AccountController(IUserRepository userRepository, ILogRepository logRepository, IUserRoleRepository userRoleRepository, ISubscriptionRepository subscriptionRepository)
+        public AccountController(IUserRepository userRepository, ILogRepository logRepository, IUserRoleRepository userRoleRepository, ISubscriptionRepository subscriptionRepository, IDiscountRepository discountRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _logRepository = logRepository ?? throw new ArgumentNullException(nameof(logRepository));
             _userRoleRepository = userRoleRepository ?? throw new ArgumentNullException(nameof(userRoleRepository));
             _subscriptionRepository = subscriptionRepository ?? throw new ArgumentNullException(nameof(subscriptionRepository));
+            _discountRepository = discountRepository ?? throw new ArgumentNullException(nameof(discountRepository));
+
         }
 
         [Route("~/Account/Register")]
@@ -78,6 +81,7 @@ namespace Cresimed.Web.Controllers
         [Route("~/Account/NewPayment")]
         public async Task<IActionResult> NewPaymentAsync(int userID)
         {
+            //discount check
             var n = new RegisterViewModel();
 
             var preference = CreatePreferenceAsync(userID,precio);
@@ -102,6 +106,7 @@ namespace Cresimed.Web.Controllers
         [Route("~/Account/NewPaymentRsp")]
         public async Task<IActionResult> NewPaymentRspAsync(string collection_id, string collection_status, string payment_id, string status, string external_reference, string payment_type, string merchant_order_id, string preference_id, string processing_mode, string merchant_account_id)
         {
+            //discount check
             var n = new RegisterViewModel();
             string rta = "";
             var ss = _subscriptionRepository.UpdateSubscription(int.Parse(external_reference), preference_id, status);
@@ -196,6 +201,48 @@ namespace Cresimed.Web.Controllers
             return View(n);
         }
 
+        [HttpPost]
+        [Route("~/Account/ValidateCodigoDeDescuento")]
+        public string ValidateCodigoDeDescuento(string deto)
+        {
+
+            var dto = _discountRepository.GetById(deto);
+
+            if (dto != null)
+                return "true";
+            else
+                return "false";
+
+        }
+
+        [HttpPost]
+        [Route("~/Account/ValidateUsername")]
+        public string ValidateUsername(string username)
+        {
+
+            var dto = _userRepository.CheckUserNameDisponibility(username);
+
+            if (dto)
+                return "true";
+            else
+                return "false";
+
+        }
+        
+        [HttpPost]
+        [Route("~/Account/ValidateEmail")]
+        public string ValidateEmail(string email)
+        {
+
+            var dto = _userRepository.CheckEmailDisponibility(email);
+
+            if (dto)
+                return "true";
+            else
+                return "false";
+
+        }
+
         [NonAction]
         public async Task<Preference> CreatePreferenceAsync(int userID, decimal precio) {
 
@@ -250,6 +297,7 @@ namespace Cresimed.Web.Controllers
           
 
         }
+
 
 
     }

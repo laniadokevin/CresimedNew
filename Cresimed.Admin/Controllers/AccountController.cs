@@ -34,10 +34,10 @@ namespace Cresimed.Admin.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            var account = _userRepository.ProcessLogin(username, password);
+            var account = _userRepository.processLogin(username, password);
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || account == null)
             {
-                ViewBag.error = "Invalid";
+                ViewBag.error = "User Not Found";
                 return View("Index");
             }
             else
@@ -51,10 +51,11 @@ namespace Cresimed.Admin.Controllers
                 else
                     return RedirectToAction("AccessDenied", "Account");
             }
+
         }
 
-        [Authorize(Roles = "SuperAdmin,Admin")]
         [Route("/Admin/Account/Welcome")]
+        [Authorize(Roles = "SuperAdmin, Admin")]
         public IActionResult Welcome()
         {
             

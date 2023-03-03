@@ -131,7 +131,7 @@
                                     <tr>
 
                                         <td>
-                                            Examenes Hechos
+                                            Exámenes hechos
                                         </td>
                                         <td>
                                             @Html.Raw(Model.CantExams)
@@ -141,7 +141,7 @@
                                     <tr>
 
                                         <td>
-                                            Tiempo Total de examenes
+                                            Tiempo total de exámenes
                                         </td>
                                         <td>
 
@@ -152,7 +152,7 @@
                                     <tr>
 
                                         <td>
-                                            Tiempo Promedio por Pregunta
+                                            Tiempo promedio por pregunta
                                         </td>
                                         <td>
                                             @Html.Raw(average)
@@ -224,7 +224,7 @@
                                         <th>
                                             Puntaje
                                         </th>
-                                        <th>
+                                        <th colspan="2">
                                             Correctas
                                         </th>
                                     </tr>
@@ -238,15 +238,15 @@
 
                                         <tr>
 
-                                            <td>
+                                            <td class="col-md-2" >
                                                 @Html.Raw(Model.ExamStats.CountBySpecialties[i].Name)
                                             </td>
-                                            <td class="text-center">
+                                            <td class="col-md-1" class="text-center">
                                                 <span>
                                                     @Html.Raw(div + "%")
                                                 </span>
                                             </td>
-                                            <td>
+                                            <td class="col-md-6" colspan="2">
                                                 <div class="d-flex justify-content-between">
                                                 </div>
                                                 <div class="progress mb-1">

@@ -58,7 +58,7 @@ namespace Cresimed.Data.Repositories
                 if (mpStatus == "null")
                 {
                     sub.Status = (int)SubscriptionStatus.Nulled;
-                    sub.MPStatus = mpStatus;
+                    sub.MPStatus = "NULL";
                 }
 
 

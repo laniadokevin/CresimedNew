@@ -34,15 +34,16 @@
         <div class="container mt-5">
             <h1>
                 <b>
-                    ¿Querés destacar en el Examen de Residencias Medicas de Argentina 2023?
+                    ¿Querés destacar en el Examen de Residencias Médicas de Argentina 2023?
                 </b>
             </h1>
             <p class="tagline">Asegurá tu lugar en los mejores hospitales con un curso diseñado para que estudies de la forma más fácil y eficiente. </p>
             <br />
-            <a class="btn btn-secondary text-center" href="@Url.Action("Register","Account")">Ingresar</a>
+            <a class="btn btn-secondary text-center" href="@Url.Action("Register","Account")">Inscribite</a>
         </div>
         
-        <div class="img-holder mt-3"></div>
+        <div class="img-holder mt-0"><img src="~/assets/images/dashboard/campusDashboard.png" alt="phone" class="img-fluid"></div>
+
         
     </header>
 
@@ -124,7 +125,8 @@
                 </div>
             </div>
             <div class="perspective-phone">
-                <img src="images/perspective.png" alt="perspective phone" class="img-fluid">
+
+                <img src="~/images/celuLoginCampus.png" alt="perspective phone" class="img-fluid">
             </div>
         </div>
 
@@ -132,114 +134,50 @@
     <!-- // end .section -->
 
 
-    <div class="section light-bg">
+    <div class="section" id="gallery">
+
         <div class="container">
-            <div class="section-title">
-                <small>FEATURES</small>
-                <h3>¿Por que elegir Cresimed?</h3>
-            </div>
-
-            <ul class="nav nav-tabs nav-justified" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#communication">Beneficios claves</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#schedule">Facilidad</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#messages">Simpleza</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#livechat">Estadisticas</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade show active" id="communication">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                        <div>
-
-                            <h2>Beneficios claves</h2>
-                            <p class="lead">+4.000 preguntas completamente nuevas y de examenes de años pasados </p>
-                            <ul>
-                                <li>
-                                     Escenarios clinicos reales que evaluan los conceptos mas importantes que tenes que saber
-                                </li>
-                                <li>
-                                     Contentido adaptado para que rindas de la mejor forma tu examen de residencia
-                                </li>
-                                <li>
-                                     Actualizaciones constantes para mantener nuestros estandares de excelencia
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="~/assets/images/dashboard/AprendizajeBasadoEnPreguntas.png" alt="dual phone" class="img-fluid">
                 </div>
-                <div class="tab-pane fade" id="schedule">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <div>
-                            <h2>Facilidad</h2>
-                            <p class="lead">Arma tus examenes personalizados segun tus necesidades</p>
-                            <ul>
-                                <li>
-                                    Genera un examen segun la cantidad de preguntas, especialidades y tipo de preguntas que quieras hacer
-                                </li>
-                                <li>
-                                    Vos elegis que queres reforzar segun tu rendimiento
-                                </li>
-                                <li>
-                                    Arma exámenes de practica o simulacros de examen reales
-                                </li>
-                            </ul>
-                        </div>
+                <div class="col-md-6 d-flex align-items-center">
+                    <div>
+                        <div class="box-icon"><span class="ti-ocket gradient-fill ti-3x"></span></div>
+                        <h2>Aprendizaje basado en preguntas</h2>
+                        <p class="mb-4">Practicá con miles de preguntas, completamente nuevas y tomadas en los últimos años, para que aprendas los conceptos más importantes del Examen de Residencia.</p>
+                        <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
+                    </div>
 
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="messages">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                        <div>
-                            <h2>Simpleza</h2>
-                            <p class="lead">Explicaciones profundas y detalladas</p>
-                            <ul>
-                                <li>
-                                    Foco puesto en los conceptos clinicos y quirúrgicos mas importantes
-                                </li>
-                                <li>
-                                    Explicaciones detalladas para entender el fundamento de las respuestas correctas
-                                </li>
-                                <li>
-                                    Palabras claves de las preguntas destacadas para identificar precozmente la respuesta
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="livechat">
-                    <div class="d-flex flex-column flex-lg-row">
-                        <div>
-                            <h2>Estadisticas</h2>
-                            <p class="lead">Estadisticas de rendimiento personales para observar tu progreso</p>
-                            <ul>
-                                <li>
-                                    Observa tus fortalezas y debilidades en base a examenes previos
-                                </li>
-                                <li>
-                                    Identifica en que especialidades tenes que reforzar tus conceptos
-                                </li>
-                                <li>
-                                    Rendimineto en base a comparacion con pares
-                                </li>
-                            </ul>
-                        </div>
-                        <img src="images/graphic.png" alt="graphic" class="img-fluid rounded align-self-start mr-lg-5 mb-5 mb-lg-0">
-                    </div>
                 </div>
             </div>
-
 
         </div>
+
+    </div>
+    <!-- // end .section -->
+
+    <div class="section">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div>
+                        <div class="box-icon"><span class="ti-ocket gradient-fill ti-3x"></span></div>
+                        <h2>Exámenes personalizados</h2>
+                        <p class="mb-4">Creá exámenes de practica según tus estadísticas personales, eligiendo la cantidad de preguntas y especialidad que desees hacer, para trabajar en tus fortalezas y debilidades.</p>
+                        <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <img src="~/assets/images/dashboard/ExámenesPersonalizados.png" alt="dual phone" class="img-fluid">
+
+                </div>
+            </div>
+
+        </div>
+
     </div>
     <!-- // end .section -->
 
@@ -248,14 +186,39 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <img src="images/dualphone.png" alt="dual phone" class="img-fluid">
+                    <img src="~/assets/images/dashboard/ExplicacionesDetalladas.png" alt="dual phone" class="img-fluid">
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <div>
                         <div class="box-icon"><span class="ti-ocket gradient-fill ti-3x"></span></div>
-                        <h2>Aprendizaje basado en preguntas</h2>
-                        <p class="mb-4">Practicá con miles de preguntas, completamente nuevas y tomadas en los últimos años, para que aprendas los conceptos más importantes del Examen de Residencia.</p>
-                        <a href="#" class="btn btn-primary">Iniciar Sesion</a></div>
+                        <h2>Explicaciones detalladas</h2>
+                        <p class="mb-4">Aprendé con justificaciones profundas de las respuestas correctas para que entiendas los conceptos esenciales detrás de cada pregunta.</p>
+                        <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- // end .section -->
+
+    <div class="section">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 d-flex align-items-center">
+                    <div>
+                        <div class="box-icon"><span class="ti-ocket gradient-fill ti-3x"></span></div>
+                        <h2>Estadísticas de rendimiento</h2>
+                        <p class="mb-4">Observá tu progreso personal durante tu estudio e identificá tus fortalezas y debilidades para asimilar todas las asignaturas del Examen.</p>
+                        <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <img src="~/assets/images/dashboard/EstadísticasDeRendimiento.png" alt="dual phone" class="img-fluid">
                 </div>
             </div>
 
@@ -272,28 +235,34 @@
                         <li class="media">
                             <div class="circle-icon mr-4">1</div>
                             <div class="media-body">
-                                <h5>Crea una cuenta</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu pellentesque pretium obcaecati vel exercitationem </p>
+                            <br>
+                                <h5>Cre&aacute; una cuenta</h5>
                             </div>
                         </li>
                         <li class="media my-4">
                             <div class="circle-icon mr-4">2</div>
                             <div class="media-body">
-                                <h5> Realiza el pago de la suscripción única.</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu pellentesque pretium obcaecati vel exercitationem eveniet</p>
+                            <br>
+                                <h5> Realiz&aacute; el pago de la suscripción única.</h5>
                             </div>
                         </li>
                         <li class="media">
                             <div class="circle-icon mr-4">3</div>
                             <div class="media-body">
+                            <br />
                                 <h5>¡Empezá a preparar el Examen de Residencia Médica de la manera más fácil y eficiente!</h5>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer rutrum, urna eu pellentesque pretium obcaecati vel exercitationem </p>
+                            </div>
+                        </li>
+                        <li class="media text-center">
+                            <div class="media-body">
+                            <br />
+                                <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div class="col-md-4">
-                    <img src="images/iphonex.png" alt="iphone" class="img-fluid">
+                    <img src="~/images/CreacionDeCuenta.png" alt="iphone" class="img-fluid">
                 </div>
 
             </div>
@@ -372,14 +341,17 @@
     <!-- // end .section -->
 
 
-    <div class="section pt-0">
-       
-    </div>
     <!-- // end .section -->
 
 
 
-    <div class="section bg-gradient">
+    <div class="section bg-gradient text-center">
+        <h2 style="color:white">
+
+            Comenzá a prepararte con Cresimed
+        </h2>
+        <br />
+        <a href="@Url.Action("Register","Account")" class="btn btn-primary">Inscribite</a>
 
     </div>
     <!-- // end .section -->
@@ -387,38 +359,45 @@
     <div class="light-bg py-5" id="contact">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 text-center text-lg-left">
+                <div class="col-lg-8 text-center text-lg-left">
                     <p class="mb-2"> <span class="ti-location-pin mr-2"></span> Ciudad Autónoma de Buenos Aires, Argentina</p>
                     <div class=" d-block d-sm-inline-block">
                         <p class="mb-2">
                             <span class="ti-email mr-2"></span> <a class="mr-4" href="mailto:cursocresimed@gmail.com">cursocresimed@gmail.com</a>
                         </p>
                     </div>
-                    <div class="d-block d-sm-inline-block">
-                        <p class="mb-0">
+                    
 
+                </div>
+                <div class="col-lg-2">
+                    <div class=" ">
+                        <p class="mb-2">
+                                <span class="ti-facebook mr-2"></span> 
+                                <a class="mr-4" href="https://www.facebook.com/profile.php?id=100090429289792&is_tour_dismissed=true" target="_blank">
+                                    Cresimed
+                                </a>
                         </p>
                     </div>
-
-                </div>
-                <div class="col-lg-6">
-                    <div class="social-icons">
+                    <div class=" d-block d-sm-inline-block">
+                        <p class="mb-2">
+                            <span class="ti-instagram mr-2"></span> <a class="mr-4" href="https://www.instagram.com/cresimed/" target="_blank">Cresimed</a>
+                        </p>
+                    </div>
                      
                     </div>
-                </div>
             </div>
 
         </div>
 
     </div>
+
     <!-- // end .section -->
     <footer class="my-5 text-center">
+     
         <!-- Copyright removal is not prohibited! -->
-        <p class="mb-2"><small>COPYRIGHT © 2023. ALL RIGHTS RESERVED. CRESIMED </p>
+        <p class="mb-2"><small>COPYRIGHT @@@DateTime.Now.Year.ToString(). ALL RIGHTS RESERVED. CRESIMED </p>
 
         <small>
         </small>
     </footer>
-
-
 </body>

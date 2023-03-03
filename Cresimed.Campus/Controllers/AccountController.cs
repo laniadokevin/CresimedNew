@@ -7,6 +7,9 @@ using Cresimed.Campus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Cresimed.Core.Entities.ViewModel.Campus;
+using Cresimed.Core.Entities.Enum;
+using MercadoPago.Resource.User;
+using System.Linq;
 
 namespace Cresimed.Campus.Controllers
 {
@@ -42,17 +45,53 @@ namespace Cresimed.Campus.Controllers
         [HttpPost]
         public IActionResult Login(string username, string password)
         {
-            var account = _userRepository.ProcessLogin(username, password);
+            var account = _userRepository.processLogin(username, password);
+
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || account == null)
             {
-                ViewBag.error = "Invalid";
-                return View("Index");
+                ViewBag.error = "Usuario o contraseña incorrecta";
             }
             else
             {
-                securityManager.SignIn(this.HttpContext, account);
-                return RedirectToAction("Welcome","Account");
+
+                if (account.UserRoles.Any(x => x.Enable))
+                {
+                    var esAdmin = account.UserRoles.Where(x=> x.Enable == true && (x.RoleID == (int)UserRoles.SUPERADMIN || x.RoleID == (int)UserRoles.ADMIN)).Any();
+                   
+                    if (esAdmin)
+                    {
+                        securityManager.SignIn(this.HttpContext, account);
+                        return RedirectToAction("Welcome", "Account");
+                    }
+                    else
+                    {
+                        switch (account.Status)
+                    {
+                        case (int)UserStatus.SUBSCRIBED:
+                            securityManager.SignIn(this.HttpContext, account);
+                            return RedirectToAction("Welcome", "Account");
+
+                        case (int)UserStatus.CREATED:
+                            ViewBag.error = "Usuario con error en el pago de la suscripción";
+                            break;
+
+                        case (int)UserStatus.CANCELED:
+                            ViewBag.error = "Usuario con error en el pago de la suscripción";
+                            break;
+
+                        case (int)UserStatus.EXPIRED:
+                            ViewBag.error = "Suscripción expirada para resuscribirse haga <a href='google.com' >click aqui</a>";
+                            break;
+
+                        default:
+                            ViewBag.error = "Usuario desactivado contactarse con soporte";
+                            break;
+                    }
+                    }
+                }
             }
+                return View("Index");
+
         }
 
         [Authorize(Roles = "SuperAdmin, Admin, Customer")]

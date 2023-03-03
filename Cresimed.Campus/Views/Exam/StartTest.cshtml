@@ -44,7 +44,7 @@
     <script src="../../assets/js/config.js"></script>
 
 </head>
-<body>
+<body style="max-width: 100%;overflow-x: hidden;">
 
 
     <!-- Report -->
@@ -253,7 +253,15 @@
                                             {
 
                                                 <span class="ExplanationSection">
-                                                    (%@a.Ratio)
+                                                    @{
+                                                        var cantResp = a.Ratio;
+                                                        var cantTot = (e.Question.Answers.Sum(x => x.Ratio)) > 0 ? (e.Question.Answers.Sum(x => x.Ratio)) : 1;
+
+                                                        var porc = (int)(((double)cantResp / (double)cantTot) * 100);
+                                                    }
+                                                    
+                                                    (%@porc)
+
 
                                                 </span>
                                             }
@@ -313,7 +321,7 @@
                                     <div class="container ">
                                                 <br>
                                                 <h2>Explicaci&oacute;n</h2>
-                                        @if (hayFotoPreg)
+                                        @if (hayFotoRta)
                                         {
                                             <div class="row ">
 

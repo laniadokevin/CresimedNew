@@ -80,7 +80,9 @@
                         <h4 class="mb-2">Bienvenido a Cresimed! 👋</h4>
                         <p class="mb-4">Por favor Inicia Sesion para iniciar tu crecimiento</p>
                         <form method="post" asp-controller="account" class="mb-3" asp-action="login">
-                            @ViewBag.error
+                            <span style="color:red">
+                                @Html.Raw(ViewBag.error)
+                            </span>
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email o Username</label>
@@ -182,6 +184,8 @@
 
     <!-- Page JS -->
     <script src="../../assets/js/pages-auth.js"></script>
+
+    
 </body>
 </html>
 

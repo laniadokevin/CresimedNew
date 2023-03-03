@@ -35,11 +35,24 @@ namespace Cresimed.Data.Repositories
                 foreach (var e in details)
                 {
                     var respuesta = fullExam.ExamDetails.Where(x => x.QuestionID == e.QuestionID).FirstOrDefault();
+
                     respuesta.AnswerID = e.AnswerID;
                     respuesta.Time = e.Time;
+                    
                     if (e.AnswerID.HasValue)
+                    {
                         respuesta.IsCorrect = respuesta.Question.Answers.Where(x => x.AnswerID == e.AnswerID).FirstOrDefault().IsCorrect;
-                    _context.SaveChanges();    
+                        var ans = _context.Answers.Where(x => x.AnswerID == e.AnswerID).FirstOrDefault();
+                        ans.Ratio = ans.Ratio+1;
+
+
+                    }
+                    
+                    _context.SaveChanges();
+
+
+                    
+
                 }
 
             }
@@ -230,6 +243,7 @@ namespace Cresimed.Data.Repositories
 
             return exams;
         }
+
         public List<Exam> GetLast5Exams(int userID)
         {
             var exams = _context.Exams

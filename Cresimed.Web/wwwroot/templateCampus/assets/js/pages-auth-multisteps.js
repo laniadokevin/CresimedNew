@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
             const stepsValidationPrev = [].slice.call(stepsValidationForm.querySelectorAll('.btn-prev'));
 
             const vacio = "";
-
+            var hecho = true;
 
             function resetStep1() {
 
@@ -100,6 +100,13 @@ document.addEventListener('DOMContentLoaded', function (e) {
 
                 }
 
+                console.log($("#multiStepsUsernameMsg").text());
+                if ($("#multiStepsUsernameMsg").text().trim() == "Ese nombre de usuario ya est\xE1 en uso. Prueba con otro.".trim()) {
+                    valid = false;
+
+                }
+
+
                 if ($("#multiStepsEmail").val() == vacio) {
 
                     $("#multiStepsEmailMsg").text("Debe completar este campo");
@@ -112,7 +119,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     $("#multiStepsEmail").css("border", "solid 1px red");
                     valid = false;
                 }
-            
+
+
+                    console.log($("#multiStepsEmailMsg").text());
+                if ($("#multiStepsEmailMsg").text() == "Ese email ya est\xE1 en uso. Prueba con otro.") {
+
+                    valid = false;
+
+                }
 
                 if ($("#multiStepsPass").val() == vacio) {
 
@@ -131,10 +145,14 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 }
                 if ($("#multiStepsConfirmPass").val() != $("#multiStepsPass").val() ) {
 
-                    $("#multiStepsConfirmPassMsg").text("Las contraseñas no coinciden");
+                    $("#multiStepsConfirmPassMsg").text("Las contrase\u00f1as no coinciden. Int\xE9ntalo de nuevo.");
                     $("#multiStepsConfirmPass").css("border", "solid 1px red");
                     valid = false;
                 }
+
+                validarUsernameExistente();
+                validarEmailExistente();
+
 
                 return valid;
 
@@ -200,8 +218,15 @@ document.addEventListener('DOMContentLoaded', function (e) {
                     $("#multiStepsLastYear").css("border", "solid 1px red");
                     valid = false;
 
-                } 
+                }
 
+                if ($("#btnTyC").is(':checked') != true) {
+
+                    $("#btnTyCMsg").text("Aceptar condiciones de uso para continuar");
+                    valid = false;
+
+                }
+                
                 return valid;
             }
 
@@ -217,22 +242,26 @@ document.addEventListener('DOMContentLoaded', function (e) {
             // Account details
             const multiSteps1 = FormValidation.formValidation(stepsValidationFormStep1, {}).on('core.form.valid', function () {
                 // Jump to the next step when all fields in the current step are valid
-                if (validateStep1())
+                if (validateStep1() )
                     validationStepper.next();
             });
 
             // Personal info
             const multiSteps2 = FormValidation.formValidation(stepsValidationFormStep2, {}).on('core.form.valid', function () {
                 // Jump to the next step when all fields in the current step are valid
-                if (validateStep2())
+                if (validateStep2() )
                     validationStepper.next();
             });
 
             // Social links
             const multiSteps3 = FormValidation.formValidation(stepsValidationFormStep3, {}).on('core.form.valid', function () {
                 // You can submit the form
-                if (validateStep3())
+                if (validateStep3() && hecho) {
+                    hecho = false;
                     stepsValidationForm.submit()
+                    
+
+                }
                 // or send the form data to server via an Ajax request
                 // To make the demo simple, I just placed an alert
             });
@@ -276,6 +305,74 @@ document.addEventListener('DOMContentLoaded', function (e) {
                             break;
                     }
                 });
+            });
+
+            //var url = "https://localhost:7062";
+            var url = "https://cresimed.com";
+
+            function validarUsernameExistente() {
+                if ($("#multiStepsUsername").val().trim() != "")
+                    $.post(url + "/Account/ValidateUsername",
+                        { username: $("#multiStepsUsername").val() },
+                        function (data, status) {
+
+                            var bool_value = data == "true" ? true : false;
+
+                            if (bool_value) {
+
+                                $("#multiStepsUsernameMsg").text("Ese nombre de usuario ya est\xE1 en uso. Prueba con otro.");
+                                $("#multiStepsUsername").css("border", "solid 1px red");
+
+                            } else {
+                                $("#multiStepsUsernameMsg").text("");
+                                $("#multiStepsUsername").css("border", "solid 0px red");
+
+                            }
+
+                        });
+
+            };
+
+            function validarEmailExistente() {
+                if ($("#multiStepsEmail").val().trim() != "")
+                    $.post(url + "/Account/ValidateEmail",
+                        { email: $("#multiStepsEmail").val() },
+                        function (data, status) {
+
+                            var bool_value = data == "true" ? true : false;
+
+                            if (bool_value) {
+                                $("#multiStepsEmailMsg").text("Ese email ya est\xE1 en uso. Prueba con otro.");
+                                $("#multiStepsEmail").css("border", "solid 1px red");
+                            } else {
+                                $("#multiStepsEmailMsg").text("");
+                                $("#multiStepsEmail").css("border", "solid 0px red");
+
+
+                            }
+                        });
+
+            }
+
+            function validarCodigoDeDescuento() {
+                $.post(url + "/Account/ValidateCodigoDeDescuento",
+                    { deto: $("#CodigoDeDescuento").val() },
+                    function (data, status) {
+                        alert();
+                    });
+            };
+
+            $(document).ready(function () {
+
+
+                $("#multiStepsUsername").focusout(function () {
+                    validarUsernameExistente();
+                });
+
+                $("#multiStepsEmail").focusout(function () {
+                    validarEmailExistente();
+                });
+
             });
         }
     })();
