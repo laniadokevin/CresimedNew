@@ -103,5 +103,11 @@ namespace Cresimed.Data.Repositories
             return Contacts.Count();
 
         }
+
+        public List<Contact> GetLast5()
+        {
+            return _context.Contacts.OrderByDescending(x=>x.ContactID).Take(5).ToList();
+
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace Cresimed.Core.Interfaces
     {
         Contact GetById(int id);
         List<Contact> GetAll();
+        List<Contact> GetLast5();
         PaginatedList<Contact> GetAllFiltered(string sortOrder, string currentFilter, string searchString, int? pageNumber);
         Contact SaveContact(Contact Contact);
         void DeleteContact(int id);

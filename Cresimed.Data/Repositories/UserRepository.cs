@@ -142,6 +142,7 @@ namespace Cresimed.Data.Repositories
         {
             var user = _context.Users
                 .Where(x => x.Deleted == false)
+                .Include(x => x.Subscriptions)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
                 .SingleOrDefault(a => a.Username.Equals(username) && a.Enable == true);
@@ -150,6 +151,7 @@ namespace Cresimed.Data.Repositories
             {
                 if (BCrypt.Net.BCrypt.Verify(password, user.Password))
                 {
+                    //if(user.Subscriptions.Any(x=>x.DatePayed.))
                     return user;
                 }
             }

@@ -79,7 +79,7 @@
                         <!-- /Logo -->
                         <h4 class="mb-2">¿Olvidaste tu contraseña? 🔒</h4>
                         <p class="mb-4">Ingresá tu email y te enviaremos las instrucciones para resetear tu contraseña.</p>
-                        <form id="formAuthentication" class="mb-3" action="auth-reset-password-basic.html" method="POST">
+                        <form id="formAuthentication" class="mb-3" action="@Url.Action("ForgotPwdPost","Account")" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text"

@@ -43,7 +43,7 @@ namespace Cresimed.Campus.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Login(string username = "", string password = "")
         {
             var account = _userRepository.processLogin(username, password);
 
@@ -117,6 +117,14 @@ namespace Cresimed.Campus.Controllers
         {
 
             return View("ForgotPwd");
+        }
+
+        [HttpPost]
+        [Route("~/Account/ForgotPwdPost")]
+        public IActionResult ForgotPwdPost(string email)
+        {
+            //Send Email
+            return View();
         }
 
         [HttpPost]

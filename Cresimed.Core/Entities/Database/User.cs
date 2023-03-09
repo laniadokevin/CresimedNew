@@ -31,6 +31,8 @@ namespace Cresimed.Core.Entities.Database
         public int Status { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        [ForeignKey("UserID")]
+        public virtual ICollection<Subscription> Subscriptions { get; set; }
 
         [ForeignKey("PercentilID")]
         public virtual ICollection<Percentil> Percentils { get; set; }
