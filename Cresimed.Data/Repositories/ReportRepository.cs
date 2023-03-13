@@ -36,12 +36,14 @@ namespace Cresimed.Data.Repositories
 
         }
 
-        public Report InsertReport(Report Report)
+        public Report InsertReport(Report report)
         {
-            _context.Reports.Add(Report);
+            report.Message = report.Message != null ? report.Message : "";
+
+            _context.Reports.Add(report);
             _context.SaveChanges();
 
-            return Report;
+            return report;
 
         }
 

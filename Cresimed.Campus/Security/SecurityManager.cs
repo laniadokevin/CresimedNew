@@ -27,7 +27,8 @@ namespace Cresimed.Campus
             claims.Add(new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()));
             user.UserRoles.ToList().ForEach(ac =>
             {
-                claims.Add(new Claim(ClaimTypes.Role, ac.Role.Name));
+                if (ac.Enable)
+                    claims.Add(new Claim(ClaimTypes.Role, ac.Role.Name));
             });
             return claims;
         }

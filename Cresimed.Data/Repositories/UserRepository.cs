@@ -145,6 +145,7 @@ namespace Cresimed.Data.Repositories
                 .Include(x => x.Subscriptions)
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
+                .AsSplitQuery()
                 .SingleOrDefault(a => a.Username.Equals(username) && a.Enable == true);
 
             if (user != null)
@@ -175,6 +176,12 @@ namespace Cresimed.Data.Repositories
         {
             try
             {
+                if (user.Province == null)
+                    user.Province = "";
+                if (user.University == null)
+                    user.University = "";
+                if (user.Country == null)
+                    user.Country = "";
                 user.DateAdded = DateTime.Now;
                 user.Deleted = false;
 

@@ -1,9 +1,28 @@
-﻿@model string
+﻿@using System.Security.Claims
+@using Cresimed.Core.Entities.Enum
+@model string
+@{
+    var roles = User.Claims.Where(x => x.Type == ClaimTypes.Role).ToList();
+    
+}
  <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class=" brand-logo" href="/admin/account/welcome"><img class="img-fluid" src="~/images/logo.png" alt="logo" /></a>
+        @if (roles.Any(x => x.Value == "SuperAdmin")){
+
+          <a class=" brand-logo" href="/admin/account/welcome"><img class="img-fluid" src="~/images/logo.png" alt="logo" /></a>
           <a class="sidebar-brand brand-logo-mini" href="/admin/account/welcome"><img src="~/images/logo-mini.png" alt="logo" /></a>
+        }
+        else if (roles.Any(x => x.Value == "Admin"))
+        {
+            <a class=" brand-logo" href="/admin/account/welcome"><img class="img-fluid" src="~/images/logo.png" alt="logo" /></a>
+            <a class="sidebar-brand brand-logo-mini" href="/admin/account/welcome"><img src="~/images/logo-mini.png" alt="logo" /></a>
+        }
+        else if (roles.Any(x => x.Value == "Employee"))
+        {
+            <a class=" brand-logo" href="@Url.Action("Questions","Grids")"><img class="img-fluid" src="~/images/logo.png" alt="logo" /></a>
+            <a class="sidebar-brand brand-logo-mini" href="@Url.Action("Questions","Grids")"><img src="~/images/logo-mini.png" alt="logo" /></a>
+        }
         </div>
         <ul class="nav">
           <li class="nav-item profile">
@@ -14,8 +33,21 @@
                   <span class="count bg-success"></span>
                 </div>
                 <div class="profile-name">
-                  <h5 class="mb-0 font-weight-normal">@Model</h5>
-                  <span>Gold Member</span>
+                  <h5 class="mb-0 font-weight-normal">@Model
+                     <br />
+                  @if(roles.Any(x=> x.Value == "SuperAdmin"))
+                  {
+                    <small class="font-weight-bold text-muted">Super Admin</small>
+                  }
+                  else if(roles.Any(x=> x.Value == "Admin"))
+                  {
+                    <small class="font-weight-bold text-muted">Admin</small>
+                  } 
+                  else if(roles.Any(x=> x.Value == "Employee"))
+                  {
+                    <small class="font-weight-bold text-muted">Employee</small>    
+                  }
+                </h5>
                 </div>
               </div>
               <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical"></i></a>
@@ -47,10 +79,7 @@
                     <div class="preview-icon bg-dark rounded-circle">
                       <i class="mdi mdi-calendar-today text-success"></i>
                     </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">To-do list</p>
-                  </div>
+                  </div> 
                 </a>
               </div>
             </div>
@@ -58,6 +87,8 @@
           <li class="nav-item nav-category">
             <span class="nav-link">Navigation</span>
           </li>
+        @if (roles.Any(x => x.Value == "SuperAdmin"))
+        {
           <li class="nav-item menu-items">
             <a class="nav-link" href="/admin/account/welcome">
               <span class="menu-icon">
@@ -114,26 +145,6 @@
                 <span class="menu-title">Contacts</span>
             </a>
         </li>
-@*
-
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="@Url.Action("Careers","Grids")">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Careers</span>
-            </a>
-          </li>
-          <li class="nav-item menu-items">
-            <a class="nav-link" href="@Url.Action("Countries","Grids")">
-              <span class="menu-icon">
-                <i class="mdi mdi-playlist-play"></i>
-              </span>
-              <span class="menu-title">Countries</span>
-            </a>
-          </li>
-         
-*@
           <li class="nav-item menu-items">
             <a class="nav-link" href="@Url.Action("Faqs","Grids")">
               <span class="menu-icon">
@@ -142,6 +153,86 @@
               <span class="menu-title">Faqs</span>
             </a>
           </li>
-        
+        }
+        else if (roles.Any(x => x.Value == "Admin"))
+        {
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="/admin/account/welcome">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-speedometer"></i>
+                    </span>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Users","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Users</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Questions","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Questions</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Specialties","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Specialties</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Categories","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Categories</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Reports","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Reports</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Contacts","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Contacts</span>
+                </a>
+            </li>
+            <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Faqs","Grids")">
+                    <span class="menu-icon">
+                        <i class="mdi mdi-playlist-play"></i>
+                    </span>
+                    <span class="menu-title">Faqs</span>
+                </a>
+            </li>
+        }
+        else if (roles.Any(x => x.Value == "Employee"))
+        {
+     
+              <li class="nav-item menu-items">
+                <a class="nav-link" href="@Url.Action("Questions","Grids")">
+                  <span class="menu-icon">
+                    <i class="mdi mdi-playlist-play"></i>
+                  </span>
+                  <span class="menu-title">Questions</span>
+                </a>
+            </li>
+     
+        }
         </ul>
       </nav>

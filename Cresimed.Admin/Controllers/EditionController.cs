@@ -12,7 +12,7 @@ using ExcelDataReader;
 namespace TestYourself.Admin.Controllers
 {
     [Route("admin/edition")]
-    [Authorize(Roles = "SuperAdmin,Admin")]
+    [Authorize(Roles = "Employee, SuperAdmin, Admin")]
     public class EditionController : Controller
     {
 

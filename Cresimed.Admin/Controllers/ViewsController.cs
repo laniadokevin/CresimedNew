@@ -15,7 +15,6 @@ using Cresimed.Core.Interfaces;
 namespace Cresimed.Admin.Controllers
 {
     [Route("admin/view")]
-    [Authorize(Roles = "SuperAdmin,Admin")]
     public class ViewsController : Controller
     {
 
@@ -85,6 +84,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Answers
 
+        [Authorize(Roles = "Employee, SuperAdmin, Admin")]
         [Route("ViewAnswer")]
         [HttpGet]
         public IActionResult ViewAnswer(int id)
@@ -189,6 +189,8 @@ namespace Cresimed.Admin.Controllers
         #endregion
 
         #region KeyWord
+
+        [Authorize(Roles = "Employee, SuperAdmin, Admin")]
         [Route("ViewKeyWord")]
         [HttpGet]
         public IActionResult ViewKeyWord(int id)
@@ -204,6 +206,7 @@ namespace Cresimed.Admin.Controllers
 
         #region Questions & Answers
 
+        [Authorize(Roles = "Employee, SuperAdmin, Admin")]
         [Route("Questions")]
         [HttpGet]
         public IActionResult Questions()
@@ -218,6 +221,7 @@ namespace Cresimed.Admin.Controllers
             return View("ImportQuestions");
         }
 
+        [Authorize(Roles = "Employee, SuperAdmin, Admin")]
         [Route("ViewQuestion")]
         [HttpGet]
         public IActionResult ViewQuestion(int id)

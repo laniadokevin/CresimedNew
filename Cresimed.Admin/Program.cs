@@ -13,10 +13,6 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(60);
     options.Cookie.HttpOnly = true;
-
-    // make the session cookie Essential
-    // so that session variable is not null
-    // check this StackOverflow answer: https://stackoverflow.com/a/64984796/19112855
     options.Cookie.IsEssential = true;
 });
 
